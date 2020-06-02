@@ -8,6 +8,7 @@ import Register from '@/components/register'
 Vue.use(Router)
 
 export default new Router({
+  base: '/mobile',
   routes: [
     {
       path: '/helloWorld',

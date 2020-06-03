@@ -4,6 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+
+import axios from 'axios'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import store from '@/store/store'
+
 Vue.config.productionTip = false
 import { Group } from 'vux'
 Vue.component('group', Group)
@@ -46,6 +52,36 @@ Vue.component('flexbox-item', FlexboxItem)
 
 import  { LoadingPlugin } from 'vux'
 Vue.use(LoadingPlugin)
+
+Vue.prototype.$ajax = axios
+Vue.use(ElementUI);
+
+Vue.config.productionTip = false
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {  // 判断该路由是否需要登录权限
+    console.log(store.state.name)
+    if (sessionStorage.getItem('name')) {  // 通过vuex state获取当前的token是否存在
+      next();
+    }
+    else {
+      next({
+        path: '/',
+        query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+      })
+    }
+  }
+  else {
+    next();
+  }
+})
+Vue.filter('formatDateTime', function (value) {
+  if (!value) return ''
+  let date = new Date(value);
+  let y = date.getFullYear() + '/';
+  let mon = (date.getMonth() + 1) + '/';
+  let d = date.getDate();
+  return y + mon + d;
+});
 new Vue({
   el: '#app',
   router,

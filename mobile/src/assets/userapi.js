@@ -22,6 +22,10 @@ const subSpending=(data)=>{
 const getSpending=(date)=>{
   return axios.post(`${url}/getSpending`,{date:date})
 }
+//获取所有消费
+const getAllSpending=()=>{
+  return axios.post(`${url}/getAllSpending`)
+}
 //按月获取消费 yyyy-mm
 const  getSumByDate=(month,nextmonth)=>{
   return axios.post(`${url}/getSumByDate`,{month:month,nextmonth:nextmonth})
@@ -32,5 +36,6 @@ export {
   changePassword,
   subSpending,
   getSpending,
-getSumByDate
+  getAllSpending,
+  getSumByDate
 }

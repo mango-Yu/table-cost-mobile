@@ -61,7 +61,7 @@
               let time=setTimeout(function () {
                 that.$store.commit('changeName', that.form.name)
                 sessionStorage.setItem("name", that.form.name);
-                that.$router.push("helloWorld");
+                that.$router.push("main");
                 clearTimeout(time)
               },2000)
 

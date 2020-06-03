@@ -6,12 +6,14 @@
     <x-input   text-align="right" type="number" title="早餐" v-model="form.breakfast"  @on-blur="blurInput('breakfast')"></x-input>
     <x-input text-align="right" title="中餐" type="number" v-model="form.lunch" @on-blur="blurInput('lunch')"></x-input>
     <x-input text-align="right" title="午餐" type="number" v-model="form.dinner" @on-blur="blurInput('dinner')"></x-input>
+    <span  style="margin-left: 10px;">总计：{{eat}}</span>
   </group>
   <group>
     <x-input text-align="right" title="交通费用" type="number" v-model="form.traffic" @on-blur="blurInput('traffic')"></x-input>
   </group>
   <group>
     <x-input text-align="right" title="零食费用" type="number" v-model="form.sock" @on-blur="blurInput('sock')"></x-input>
+    <span style="margin-left: 10px;">包含饮料，零食，大包零食记录首天</span>
   </group>
   <group>
     <x-switch text-align="right" title="今天上班" :value-map="[0, 1]" v-model="form.work"></x-switch>
@@ -23,6 +25,10 @@
   <group>
     <x-input text-align="right" title="服装费用" type="number" v-model="form.clothes" @on-blur="blurInput('clothes')"></x-input>
     <x-textarea placeholder="服装费用备注" v-model="form.clothesRemind"></x-textarea>
+  </group>
+  <group>
+    <x-input text-align="right" title="人情费用" type="number" v-model="form.gifts" @on-blur="blurInput('gifts')"></x-input>
+    <x-textarea placeholder="人情费用备注" v-model="form.giftsRemind"></x-textarea>
   </group>
   <group>
     <x-input text-align="right" title="其他费用" type="number" v-model="form.others" @on-blur="blurInput('others')"></x-input>
@@ -59,6 +65,8 @@
             playRemind: "",
             others: 0,
             othersRemind: "",
+            gifts: 0,
+            giftsRemind: "",
             user:""
           },
           now:"",
@@ -78,7 +86,7 @@
           return '吃饭费用（总计：'+(parseFloat(this.form.breakfast)+parseFloat(this.form.lunch)+parseFloat(this.form.dinner))+'）'
         },
         all(){
-          return parseFloat(this.form.breakfast)+parseFloat(this.form.lunch)+parseFloat(this.form.dinner)+parseFloat(this.form.traffic)+parseFloat(this.form.sock)+parseFloat(this.form.clothes)+parseFloat(this.form.play)+parseFloat(this.form.others)
+          return parseFloat(this.form.breakfast)+parseFloat(this.form.lunch)+parseFloat(this.form.dinner)+parseFloat(this.form.traffic)+parseFloat(this.form.sock)+parseFloat(this.form.clothes)+parseFloat(this.form.play)+parseFloat(this.form.others)+parseFloat(this.form.gifts)
         }
       },
       methods:{
@@ -175,10 +183,10 @@
               }else{
                 for(let i in that.form){
                   console.log(i)
-                  if (!(i == "playRemind" || i == "clothesRemind" || i == "othersRemind"||i == "date"||i=='user')) {
+                  if (!(i == "playRemind" || i == "clothesRemind"|| i == "giftsRemind" || i == "othersRemind"||i == "date"||i=='user')) {
                     that.form[i]=0
                   }else {
-                    if(i != "date"){
+                    if(i != "date"&&i != "user"){
                       that.form[i]=""
                     }
                   }

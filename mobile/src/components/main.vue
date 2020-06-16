@@ -6,7 +6,7 @@
      <tab-item @on-item-click="onItemClick(2)">图表</tab-item>
    </tab>
      <day v-show="isShow == 0"></day>
-     <month  v-show="isShow == 1"></month>
+     <month  v-show="isShow == 1" ref="initMon"></month>
      <list v-show="isShow == 2" ref="initList"></list>
 
 
@@ -35,7 +35,9 @@ export default {
   methods:{
     onItemClick(val){
       this.isShow=val
-      if(val === 2){
+      if(val === 1){
+        this.$refs.initMon.init()
+      }else if (val === 2) {
         this.$refs.initList.init()
       }
     }

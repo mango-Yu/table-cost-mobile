@@ -5,7 +5,7 @@
   <group  :title="eat">
     <x-input   text-align="right" type="number" title="早餐" v-model="form.breakfast"  @on-blur="blurInput('breakfast')"></x-input>
     <x-input text-align="right" title="中餐" type="number" v-model="form.lunch" @on-blur="blurInput('lunch')"></x-input>
-    <x-input text-align="right" title="午餐" type="number" v-model="form.dinner" @on-blur="blurInput('dinner')"></x-input>
+    <x-input text-align="right" title="晚餐" type="number" v-model="form.dinner" @on-blur="blurInput('dinner')"></x-input>
     <span  style="margin-left: 10px;">总计：{{eat}}</span>
   </group>
   <group>
@@ -74,7 +74,7 @@
       },
       mounted: function () {
         let date=new Date()
-        this.now= this.form.date = formatDate(date, "yyyy-MM-dd")
+        this.now = this.form.date = formatDate(date, "yyyy-MM-dd")
         this.form.user=this.$store.state.name
         console.log( this.form.user)
         this.init()
@@ -83,10 +83,24 @@
       },
       computed:{
         eat(){
+          this.form.breakfast = this.form.breakfast === '' ? 0 :this.form.breakfast;
+          this.form.lunch = this.form.lunch === '' ? 0 :this.form.lunch;
+          this.form.dinner = this.form.dinner === '' ? 0 :this.form.dinner;
+          console.log(this.form.breakfast)
           return '吃饭费用（总计：'+(parseFloat(this.form.breakfast)+parseFloat(this.form.lunch)+parseFloat(this.form.dinner))+'）'
         },
         all(){
-          return parseFloat(this.form.breakfast)+parseFloat(this.form.lunch)+parseFloat(this.form.dinner)+parseFloat(this.form.traffic)+parseFloat(this.form.sock)+parseFloat(this.form.clothes)+parseFloat(this.form.play)+parseFloat(this.form.others)+parseFloat(this.form.gifts)
+          this.form.breakfast = this.form.breakfast === '' ? 0 :this.form.breakfast;
+          this.form.lunch = this.form.lunch === '' ? 0 :this.form.lunch;
+          this.form.dinner = this.form.dinner === '' ? 0 :this.form.dinner;
+          this.form.traffic = this.form.traffic === '' ? 0 :this.form.traffic;
+          this.form.sock = this.form.sock === '' ? 0 :this.form.sock;
+          this.form.clothes = this.form.clothes === '' ? 0 :this.form.clothes;
+          this.form.play = this.form.play === '' ? 0 :this.form.play;
+          this.form.others = this.form.others === '' ? 0 :this.form.others;
+          this.form.gifts = this.form.gifts === '' ? 0 :this.form.gifts;
+          return parseFloat(this.form.breakfast)+parseFloat(this.form.lunch)+parseFloat(this.form.dinner)+parseFloat(this.form.traffic)+parseFloat(this.form.sock)+
+            parseFloat(this.form.clothes)+parseFloat(this.form.play)+parseFloat(this.form.others)+parseFloat(this.form.gifts)
         }
       },
       methods:{
@@ -140,7 +154,7 @@
           let flag = 1;
           let error = ""
           for (let i in obj) {
-            if (!(i == "playRemind" || i == "clothesRemind" || i == "othersRemind"||i == "date"||i=='user')) {
+            if (!(i == "playRemind" || i == "clothesRemind" || i == "othersRemind" || i == "giftsRemind"||i == "date"||i=='user')) {
               console.log((obj[i]))
               if ((obj[i]+"")=="") {
                 flag = 0;
@@ -179,6 +193,7 @@
             data=data.data
             if(data.code==1){
               if(data.data.length>0){
+                data.data[0].date = formatDate(new Date(data.data[0].date), "yyyy-MM-dd")
                 that.form=data.data[0]
               }else{
                 for(let i in that.form){
@@ -198,6 +213,7 @@
             }
 
           }).catch(function (error) {
+            console.log(error)
             that.$vux.toast.error('系统异常');
           })
         },

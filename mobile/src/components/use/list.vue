@@ -118,6 +118,9 @@
           data=data.data
           if(1 === data.code){
             if(data.data.length>0){
+              that.dateArr=[]
+              that.costArr=[]
+              that.costTypeSumArr=[]
               that.tableData=data.data;
               var breakfastSum = 0, lunchSum = 0, dinnerSum = 0, eatSum = 0, trafficSum = 0, sockSum = 0,
                   clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0;
@@ -278,7 +281,7 @@
           },
           legend: {
             orient: 'vertical',
-            left: '100',
+            left: '10',
             top: '100',
             data: ["早餐", "午餐", '晚餐', "餐飲", "交通", "零食", "服装", "娱乐", "其他", "人情"]
           },

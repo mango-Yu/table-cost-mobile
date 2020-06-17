@@ -20,7 +20,7 @@
                   show-summary
                   :summary-method="getSummaries">
           <el-table-column align="center" prop="id" v-if="idShow" label="ID" ></el-table-column>
-          <el-table-column align="center" prop="date" label="日期" sortable  >
+          <el-table-column align="center" prop="date" label="日期" sortable width="100" >
             <template slot-scope="scope">
               {{scope.row.date  | formatDateTime}}
             </template>
@@ -80,7 +80,7 @@
       return {
         loading: false,
         idShow: false,
-        total: 2,
+        total: 0,
         currentPage: 1,
         pageSize: 10,
         tableData: [],
@@ -122,12 +122,13 @@
               that.costArr=[]
               that.costTypeSumArr=[]
               that.tableData=data.data;
+              that.total = data.data.length;
               var breakfastSum = 0, lunchSum = 0, dinnerSum = 0, eatSum = 0, trafficSum = 0, sockSum = 0,
                   clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0;
               that.tableData.forEach((item, index) => {
-                that.tableData[index].sumCalc = parseFloat(item.breakfast)+parseFloat(item.lunch)+parseFloat(item.dinner)+
+                that.tableData[index].sumCalc = (parseFloat(item.breakfast)+parseFloat(item.lunch)+parseFloat(item.dinner)+
                   parseFloat(item.traffic)+parseFloat(item.sock)+parseFloat(item.clothes)+
-                  parseFloat(item.play)+parseFloat(item.others)+parseFloat(item.gifts);
+                  parseFloat(item.play)+parseFloat(item.others)+parseFloat(item.gifts)).toFixed(2);
                 breakfastSum = parseFloat(item.breakfast)+breakfastSum;
                 lunchSum = parseFloat(item.lunch)+lunchSum;
                 dinnerSum = parseFloat(item.dinner)+dinnerSum;
@@ -142,16 +143,16 @@
 
               });
               that.costTypeSumArr.push(
-                {"value": breakfastSum, "name": "早餐"},
-                {"value": lunchSum, "name": "午餐"},
-                {"value": dinnerSum, "name": "晚餐"},
-                {"value": breakfastSum+lunchSum+dinnerSum,"name":"餐飲"},
-                {"value": trafficSum, "name": "交通"},
-                {"value": sockSum, "name": "零食"},
-                {"value": clothesSum, "name": "服装"},
-                {"value": playSum, "name": "娱乐"},
-                {"value": othersSum, "name": "其他"},
-                {"value": giftsSum, "name": "人情"}
+                {"value": breakfastSum.toFixed(2), "name": "早餐"},
+                {"value": lunchSum.toFixed(2), "name": "午餐"},
+                {"value": dinnerSum.toFixed(2), "name": "晚餐"},
+                {"value": (breakfastSum+lunchSum+dinnerSum).toFixed(2),"name":"餐飲"},
+                {"value": trafficSum.toFixed(2), "name": "交通"},
+                {"value": sockSum.toFixed(2), "name": "零食"},
+                {"value": clothesSum.toFixed(2), "name": "服装"},
+                {"value": playSum.toFixed(2), "name": "娱乐"},
+                {"value": othersSum.toFixed(2), "name": "其他"},
+                {"value": giftsSum.toFixed(2), "name": "人情"}
               );
               that.drawShape();
             }else{
@@ -192,14 +193,14 @@
             || index === 6 || index === 7 || index === 9 || index === 11 || index === 13 || index === 16) {
             const values = data.map(item => Number(item[column.property]))
             if (!values.every(value => isNaN(value))) {
-              sums[index] = values.reduce((prev, curr) => {
-                const value = Number(curr)
+              sums[index] = parseFloat(values.reduce((prev, curr) => {
+                const value = parseFloat(curr).toFixed(2)
                 if (!isNaN(value)) {
                   return prev + curr
                 } else {
                   return prev
                 }
-              }, 0)
+              }, 0)).toFixed(2)
             }else {
               sums[index] = 'N/A'
             }
@@ -282,7 +283,7 @@
           legend: {
             orient: 'vertical',
             left: '10',
-            top: '100',
+            top: '60',
             data: ["早餐", "午餐", '晚餐', "餐飲", "交通", "零食", "服装", "娱乐", "其他", "人情"]
           },
           series: [

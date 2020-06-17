@@ -87,7 +87,7 @@
           this.form.lunch = this.form.lunch === '' ? 0 :this.form.lunch;
           this.form.dinner = this.form.dinner === '' ? 0 :this.form.dinner;
           console.log(this.form.breakfast)
-          return '吃饭费用（总计：'+(parseFloat(this.form.breakfast)+parseFloat(this.form.lunch)+parseFloat(this.form.dinner))+'）'
+          return '吃饭费用（总计：'+(parseFloat(this.form.breakfast)+parseFloat(this.form.lunch)+parseFloat(this.form.dinner)).toFixed(2)+'）'
         },
         all(){
           this.form.breakfast = this.form.breakfast === '' ? 0 :this.form.breakfast;
@@ -99,8 +99,8 @@
           this.form.play = this.form.play === '' ? 0 :this.form.play;
           this.form.others = this.form.others === '' ? 0 :this.form.others;
           this.form.gifts = this.form.gifts === '' ? 0 :this.form.gifts;
-          return parseFloat(this.form.breakfast)+parseFloat(this.form.lunch)+parseFloat(this.form.dinner)+parseFloat(this.form.traffic)+parseFloat(this.form.sock)+
-            parseFloat(this.form.clothes)+parseFloat(this.form.play)+parseFloat(this.form.others)+parseFloat(this.form.gifts)
+          return (parseFloat(this.form.breakfast)+parseFloat(this.form.lunch)+parseFloat(this.form.dinner)+parseFloat(this.form.traffic)+parseFloat(this.form.sock)+
+            parseFloat(this.form.clothes)+parseFloat(this.form.play)+parseFloat(this.form.others)+parseFloat(this.form.gifts)).toFixed(2)
         }
       },
       methods:{

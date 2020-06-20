@@ -163,11 +163,11 @@
 
             }
           }else{
-            that.$message.error('系统异常');
+            that.$message.show({text: '系统异常', type: 'warn', isShowMask: true});
           }
 
         }).catch(function (error) {
-          that.$message.error('系统异常');
+          that.$message.show({text: '系统异常', type: 'warn', isShowMask: true});
         })
       },
 

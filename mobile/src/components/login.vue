@@ -56,12 +56,12 @@
 
           }else{
             console.log('jjj')
-            that.$vux.toast.error(data.msg);
+            that.$vux.toast.show({text: data.msg, type: 'warn', isShowMask: true});
           }
 
         }).catch(function (error) {
           that.$vux.loading.hide()
-          that.$vux.toast.error('登陆失败');
+          that.$vux.toast.show({text: '登陆失败', type: 'warn', isShowMask: true});
           console.log(error);
         });
       }

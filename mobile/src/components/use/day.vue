@@ -143,12 +143,12 @@
             that.form.date = val
             if (that.form.date < '2018-05-29') {
               that.form.date = '2018-05-29';
-              that.$vux.toast.error('2018-05-29是最早时间');
+              that.$vux.toast.show({text: '2018-05-29是最早时间', type: 'warn', isShowMask: true});
 
             }
             if (that.form.date > that.now) {
               that.form.date = that.now;
-              that.$vux.toast.error(that.now + '是最晚时间');
+              that.$vux.toast.show({text: that.now + '是最晚时间', type: 'warn', isShowMask: true});
 
             }
             that.init()
@@ -179,7 +179,7 @@
           }
         }
         if (flag == 0) {
-          this.$vux.toast.error(error)
+          this.$vux.toast.show({text: error, type: 'warn', isShowMask: true});
           return
         }
         var that = this;
@@ -191,10 +191,10 @@
             that.$emit('goinit')
           } else {
             console.log(error)
-            that.$vux.toast.error("提交失败")
+            that.$vux.toast.show({text: '提交失败', type: 'warn', isShowMask: true});
           }
         }).catch(function (error) {
-          that.$vux.toast.error('提交失败');
+          that.$vux.toast.show({text: '提交失败', type: 'warn', isShowMask: true});
           console.log(error);
         });
 
@@ -222,12 +222,12 @@
               }
             }
           } else {
-            that.$vux.toast.error('系统异常');
+            that.$vux.toast.show({text: '系统异常', type: 'warn', isShowMask: true});
           }
 
         }).catch(function (error) {
           console.log(error)
-          that.$vux.toast.error('系统异常');
+          that.$vux.toast.show({text: '系统异常', type: 'warn', isShowMask: true});
         })
       },
       formatInput(val) {

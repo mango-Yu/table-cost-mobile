@@ -38,15 +38,16 @@
       methods: {
         onSubmit() {
           if(this.form.name==''){
-            this.$vux.toast.error('请输入用户名');
+            this.$vux.toast.show({text: '请输入用户名', type: 'warn', isShowMask: true});
+            // this.$vux.toast.error('请输入用户名');
             return
           }
           if(this.form.passsword==''){
-            this.$vux.toast.error('请输入密码');
+            this.$vux.toast.show({text: '请输入密码', type: 'warn', isShowMask: true});
             return
           }
           if(this.form.passsword!=this.form.repPasssword){
-            this.$vux.toast.error("重复密码与密码不一致")
+            this.$vux.toast.show({text: '重复密码与密码不一致', type: 'warn', isShowMask: true});
             return
           }
           var that=this
@@ -67,13 +68,13 @@
 
             }else{
 
-              that.$vux.toast.error(data.msg)
+              that.$vux.toast.show({text: data.msg, type: 'warn', isShowMask: true});
             }
 
           }).catch(function (error) {
             console.log(error)
             that.$vux.loading.hide()
-            that.$vux.toast.error("注册失败")
+            that.$vux.toast.show({text: '注册失败', type: 'warn', isShowMask: true});
           })
 
         }

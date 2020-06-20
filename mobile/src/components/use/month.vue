@@ -83,12 +83,12 @@
               console.log(that.nextmonth)
               if(that.month<'2018-05'){
                 that.month='2018-05';
-                that.$vux.toast.error('2018-05是最早时间');
+                that.$vux.toast.show({text: '2018-05是最早时间', type: 'warn', isShowMask: true});
 
               }
               if(that.month>that.now){
                 that.month=that.now;
-                that.$vux.toast.error(that.now+'是最晚时间');
+                that.$vux.toast.show({text: that.now+'是最晚时间', type: 'warn', isShowMask: true});
 
               }
               that.init()
@@ -150,19 +150,19 @@
         },
         changePas(){
           if(this.passsword.origain==''){
-            this.$vux.toast.error('请输入原来的密码');
+            this.$vux.toast.show({text: '请输入原来的密码', type: 'warn', isShowMask: true});
             return
           }
           if(this.passsword.newword==''){
-            this.$vux.toast.error('请输入新的的密码');
+            this.$vux.toast.show({text: '请输入新的的密码', type: 'warn', isShowMask: true});
             return
           }
           if(this.passsword.remewword==''){
-            this.$vux.toast.error('重复密码');
+            this.$vux.toast.show({text: '重复密码', type: 'warn', isShowMask: true});
             return
           }
           if(this.passsword.remewword!=this.passsword.newword){
-            this.$vux.toast.error('新的的密码与重复密码不一致');
+            this.$vux.toast.show({text: '新的的密码与重复密码不一致', type: 'warn', isShowMask: true});
             return
           }
           let that=this;
@@ -173,11 +173,11 @@
               that.$vux.toast.show('修改成功');
               that.dialogVisible=false
             }else{
-              that.$vux.toast.error(newdata.msg);
+              that.$vux.toast.show({text: newdata.msg, type: 'warn', isShowMask: true});
             }
           }).catch(function (error) {
             console.log(error)
-            that.$vux.toast.error('未知异常');
+            that.$vux.toast.show({text: '未知异常', type: 'warn', isShowMask: true});
 
           })
 

@@ -30,6 +30,10 @@ const getAllSpending=()=>{
 const  getSumByDate=(month,nextmonth)=>{
   return axios.post(`${url}/getSumByDate`,{month:month,nextmonth:nextmonth})
 }
+//获取验证码
+const  getSms=(data)=>{
+  return axios.post(`${url}/msg`,data)
+}
 export {
   register,
   login,
@@ -37,5 +41,6 @@ export {
   subSpending,
   getSpending,
   getAllSpending,
-  getSumByDate
+  getSumByDate,
+  getSms
 }

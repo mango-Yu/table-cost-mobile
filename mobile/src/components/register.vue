@@ -5,11 +5,11 @@
     </div>
     <div class="remind">这是一个简单的记账本<br>可以让你知道你的钱花在哪了</div>
     <group>
-      <x-input  placeholder="用户名" v-model="form.name"></x-input>
-      <x-input  placeholder="密码" v-model="form.passsword"></x-input>
-      <x-input  placeholder="重复密码" v-model="form.repPasssword"></x-input>
-      <x-input  placeholder="请输入手机号码" v-model="form.phoneNum"></x-input>
-      <x-input  placeholder="请输入验证码" v-model="form.verifyNum">
+      <x-input type="text" placeholder="用户名" v-model="form.name"></x-input>
+      <x-input type="password" placeholder="密码" v-model="form.password"></x-input>
+      <x-input type="password" placeholder="重复密码" v-model="form.repPassword"></x-input>
+      <x-input type="number" placeholder="请输入手机号码" v-model="form.phoneNum"></x-input>
+      <x-input type="number" placeholder="请输入验证码" v-model="form.verifyNum">
         <x-button slot="right" type="primary" mini @click.native="sendSmsCode" >{{btnContent}}</x-button>
       </x-input>
     </group>
@@ -33,11 +33,12 @@
         return {
           form: {
             name: '',
-            passsword: '',
-            repPasssword: "",
+            password: '',
+            repPassword: "",
             phoneNum:"", //手机号
             verifyNum:"", //验证码
           },
+          sessionId: '',//sessionId
           btnContent:"获取验证码", //获取验证码按钮内文字
           time:0, //发送验证码间隔时间
           disabled:false //按钮状态
@@ -51,11 +52,11 @@
             // this.$vux.toast.error('请输入用户名');
             return
           }
-          if(this.form.passsword==''){
+          if(this.form.password==''){
             this.$vux.toast.show({text: '请输入密码', type: 'warn', isShowMask: true});
             return
           }
-          if(this.form.passsword!=this.form.repPasssword){
+          if(this.form.password!=this.form.repPassword){
             this.$vux.toast.show({text: '重复密码与密码不一致', type: 'warn', isShowMask: true});
             return
           }
@@ -73,9 +74,10 @@
           })
           let obj = {
             name: this.form.name,
-            passsword: this.form.passsword,
+            password: this.form.password,
             phoneNum: this.form.phoneNum,
-            verifyNum: this.form.verifyNum
+            verifyNum: this.form.verifyNum,
+            sessionId: this.sessionId
           }
           register(obj).then(function (data) {
             that.$vux.loading.hide()
@@ -118,12 +120,14 @@
           // 获取验证码请求
           var obj = {"phoneNum":that.form.phoneNum};
           getSms(obj).then(function (data) {
+            let object = data.data;
             that.$vux.loading.hide()
             console.log(data)
             console.log(data.data.SendStatusSet)
             data=data.data.SendStatusSet[0];
             if(data.Code=="Ok"){
               that.$vux.toast.show('发送成功');
+              that.sessionId = object.sessionId;
             }else{
               that.$vux.toast.show({text: data.msg, type: 'warn', isShowMask: true});
             }

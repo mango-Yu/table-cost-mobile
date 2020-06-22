@@ -5,7 +5,7 @@
     </div>
     <div class="remind">这是一个简单的记账本<br>可以让你知道你的钱花在哪了</div>
    <group>
-      <x-input  placeholder="用户名" v-model="form.name"></x-input>
+      <x-input type="text" placeholder="用户名" v-model="form.name"></x-input>
       <x-input  placeholder="密码" type="password" v-model="form.passsword"></x-input>
   </group>
   <flexbox>

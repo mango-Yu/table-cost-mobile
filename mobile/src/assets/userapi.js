@@ -7,8 +7,8 @@ const login=(name,pas)=>{
   return axios.post(`${url}/login`,{name:name,password:pas})
 }
 //注册
-const register=(name,pas)=>{
-  return axios.post(`${url}/register`,{name:name,password:pas})
+const register=(data)=>{
+  return axios.post(`${url}/register`,data)
 }
 //修改密码
 const changePassword=(pas,newPas)=>{

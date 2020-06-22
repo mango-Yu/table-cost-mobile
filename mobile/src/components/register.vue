@@ -71,7 +71,13 @@
           this.$vux.loading.show({
             text: 'Loading'
           })
-          register(this.form.name,this.form.passsword).then(function (data) {
+          let obj = {
+            name: this.form.name,
+            passsword: this.form.passsword,
+            phoneNum: this.form.phoneNum,
+            verifyNum: this.form.verifyNum
+          }
+          register(obj).then(function (data) {
             that.$vux.loading.hide()
             data=data.data
             if(data.code==1){

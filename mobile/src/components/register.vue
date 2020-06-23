@@ -10,7 +10,7 @@
       <x-input type="password" placeholder="重复密码" v-model="form.repPassword"></x-input>
       <x-input type="number" placeholder="请输入手机号码" v-model="form.phoneNum"></x-input>
       <x-input type="number" placeholder="请输入验证码" v-model="form.verifyNum">
-        <x-button slot="right" type="primary" mini @click.native="sendSmsCode" >{{btnContent}}</x-button>
+        <x-button slot="right" type="primary" mini @click.native="sendSmsCode" :disabled="disabled">{{btnContent}}</x-button>
       </x-input>
     </group>
     <flexbox>
@@ -149,25 +149,6 @@
             clearTimeout(timer);
             this.disabled = false;
           }
-        },
-        // 验证验证码
-        verificationCode(){
-          var that = this;
-          var phoneNum = that.form.phoneNum;//手机号
-          var verifyNum = that.form.verifyNum;//验证码
-
-          var  url = 'http://bosstan.asuscomm.com/api/common/verificationCode';
-          this.$http.post(url,{
-            username:phoneNum,
-            code:verifyNum
-          },{
-            emulateJSON:true
-          }).then((response)=>{
-            console.log(response.body);
-          });
-        },
-        fillContent(){
-          // console.log("fillContent");
         }
       }
     }

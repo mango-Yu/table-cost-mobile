@@ -53,6 +53,7 @@
       </el-col>
       <el-col :span="24" class="toolbar">
         <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       @prev-click="handlePrevChange" @next-click="handleNextChange"
                        :current-page="currentPage" :page-sizes="[10, 50, 100, 200]" :page-size="pageSize"
                        layout="total, sizes, prev, pager, next" :total="total">
         </el-pagination>
@@ -86,6 +87,7 @@
         currentPage: 1,
         pageSize: 10,
         tableData: [],
+        objectData: [],
         detailId: 0, // 详情ID
         filters: { // 搜索表单
           number: ''
@@ -98,15 +100,8 @@
       };
     },
     mounted: function () {
-      /*console.log(document.body.clientWidth)
-      let width = document.body.clientWidth;
-      document.getElementById('chartColumn').style.width = width.toString();
-      document.getElementById('chartBar').style.width = width.toString();
-      document.getElementById('chartPie').style.width = width.toString();
-
-      console.log(document.getElementById('chartColumn').offsetWidth)*/
+      // [{"id":1,"date":"2020-01-09T16:00:00.000Z","user":"syy","breakfast":"11","lunch":"0","dinner":"0","traffic":"1","buy":"0","sock":"1","clothes":"1","play":"11","others":"1","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":" ","buysRemind":"","work":1},{"id":2,"date":"2020-01-10T16:00:00.000Z","user":"syy","breakfast":"22","lunch":"0","dinner":"0","traffic":"5","buy":"0","sock":"11","clothes":"0","play":"0","others":"0","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":" ","buysRemind":"","work":0},{"id":4,"date":"2020-01-11T16:00:00.000Z","user":"syy","breakfast":"1","lunch":"1","dinner":"1","traffic":"12","buy":"0","sock":"12","clothes":"0","play":"0","others":"0","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":" ","buysRemind":"","work":0},{"id":5,"date":"2020-01-16T16:00:00.000Z","user":"syy","breakfast":"13","lunch":"20","dinner":"0","traffic":"10","buy":"0","sock":"0","clothes":"0","play":"0","others":"0","gifts":"1000","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":"","buysRemind":"","work":1},{"id":6,"date":"2020-06-15T16:00:00.000Z","user":"syy","breakfast":"4","lunch":"19","dinner":"16","traffic":"7.2","buy":"0","sock":"0","clothes":"0","play":"0","others":"0","gifts":"0","playRemind":"æ— ","clothesRemind":"æ— ","othersRemind":"æ— ","giftsRemind":"wu ","buysRemind":"","work":1},{"id":7,"date":"2020-06-16T16:00:00.000Z","user":"syy","breakfast":"4.3","lunch":"23.2","dinner":"0","traffic":"3.2","buy":"0","sock":"0","clothes":"0","play":"0","others":"0","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":"","buysRemind":"","work":1},{"id":8,"date":"2020-06-17T16:00:00.000Z","user":"syy","breakfast":"4","lunch":"23.3","dinner":"0","traffic":"6.4","buy":"0","sock":"0","clothes":"0","play":"0","others":"88","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"é¼ æ ‡","giftsRemind":"","buysRemind":"","work":1},{"id":9,"date":"2020-06-18T16:00:00.000Z","user":"syy","breakfast":"4","lunch":"17","dinner":"0","traffic":"6.4","buy":"0","sock":"0","clothes":"0","play":"0","others":"486.18","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"ä¿é™©","giftsRemind":"","buysRemind":"","work":1},{"id":10,"date":"2020-06-19T16:00:00.000Z","user":"syy","breakfast":"6","lunch":"16","dinner":"0","traffic":"6.4","buy":"0","sock":"0","clothes":"0","play":"0","others":"0","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":"","buysRemind":"","work":1},{"id":11,"date":"2020-06-20T16:00:00.000Z","user":"syy","breakfast":"0","lunch":"0","dinner":"0","traffic":"0","buy":"0","sock":"0","clothes":"0","play":"0","others":"415.3","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"é£Ÿæ196.4ï¼Œä¿é™©10.75ï¼Œ62.65ï¼Œ85.5ï¼ŒåŸŸåç»­è´¹60","giftsRemind":"","buysRemind":"","work":0},{"id":12,"date":"2020-06-21T16:00:00.000Z","user":"syy","breakfast":"6","lunch":"23.58","dinner":"0","traffic":"6.4","buy":"0","sock":"0","clothes":"0","play":"0","others":"0","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":"","buysRemind":"","work":1},{"id":13,"date":"2020-06-22T16:00:00.000Z","user":"syy","breakfast":"6","lunch":"0","dinner":"0","traffic":"3.2","buy":"0","sock":"0","clothes":"0","play":"0","others":"0","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":"","buysRemind":"","work":1}]
       // this.init()
-
     },
     computed:{
 
@@ -120,10 +115,11 @@
           data=data.data
           if(1 === data.code){
             if(data.data.length>0){
-              that.dateArr=[]
-              that.costArr=[]
-              that.costTypeSumArr=[]
-              that.tableData=data.data;
+              that.dateArr=[];
+              that.costArr=[];
+              that.costTypeSumArr=[];
+              that.objectData = data.data;
+              that.tableData= that.pagination(1,10,that.objectData);
               that.total = data.data.length;
               var breakfastSum = 0, lunchSum = 0, dinnerSum = 0, eatSum = 0, trafficSum = 0, sockSum = 0,
                   clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0, buySum = 0;
@@ -178,12 +174,29 @@
 
       // 选择每页显示条数
       handleSizeChange(val){
-//        this.pageSize = val;
-//        this.currentPage = 1;
+        let that = this;
+        that.pageSize = val;
+        that.currentPage = 1;
+        that.tableData = that.pagination(that.currentPage,that.pageSize,that.objectData);
       },
-      // 跳转页
-      handleCurrentChange(val){
-//        this.currentPage = val;
+      handleCurrentChange(val) {
+        let that = this;
+        that.tableData = that.pagination(val,that.pageSize,that.objectData);
+      },
+      handlePrevChange(val) {
+        let that = this;
+        that.tableData = that.pagination(val,that.pageSize,that.objectData);
+      },
+      handleNextChange(val) {
+        let that = this;
+        that.tableData = that.pagination(val,that.pageSize,that.objectData);
+      },
+      getAllSpendings(){
+
+      },
+      pagination(pageNo, pageSize, array) {
+          var offset = (pageNo - 1) * pageSize;
+          return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset + pageSize);
       },
 
       // 房间号的合计去掉

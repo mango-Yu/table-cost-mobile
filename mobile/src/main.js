@@ -53,6 +53,9 @@ Vue.component('flexbox-item', FlexboxItem)
 import  { LoadingPlugin } from 'vux'
 Vue.use(LoadingPlugin)
 
+import SlideVerify from 'vue-monoplasty-slide-verify';
+Vue.use(SlideVerify);
+
 Vue.prototype.$ajax = axios
 Vue.use(ElementUI);
 

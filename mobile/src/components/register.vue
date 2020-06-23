@@ -13,6 +13,17 @@
         <x-button slot="right" type="primary" mini @click.native="sendSmsCode" :disabled="disabled">{{btnContent}}</x-button>
       </x-input>
     </group>
+    <group v-show="verifyImg" class="verifyImg_box">
+      <slide-verify :l="42"
+                    :r="10"
+                    :w="310"
+                    :h="155"
+                    slider-text="向右滑动"
+                    @success="onSuccess"
+                    @fail="onFail"
+                    @refresh="onRefresh"
+      ></slide-verify>
+    </group>
     <flexbox>
       <flexbox-item>
         <x-button type="primary" @click.native="onSubmit" >注册</x-button>
@@ -41,8 +52,9 @@
           sessionId: '',//sessionId
           btnContent:"获取验证码", //获取验证码按钮内文字
           time:0, //发送验证码间隔时间
-          disabled:false //按钮状态
-
+          disabled:false, //按钮状态
+          verifyImg: false,
+          imgsArr:[]//:imgs="imgsArr"
         }
       },
       methods: {
@@ -115,27 +127,7 @@
           if(!reg.test(phoneNum)){//手机号不合法
             that.$vux.toast.show({text: '您输入的手机号码不合法，请重新输入', type: 'warn', isShowMask: true});
           }
-          this.time = 60;
-          this.timer();
-          // 获取验证码请求
-          var obj = {"phoneNum":that.form.phoneNum};
-          getSms(obj).then(function (data) {
-            let object = data.data;
-            that.$vux.loading.hide()
-            console.log(data)
-            console.log(data.data.SendStatusSet)
-            data=data.data.SendStatusSet[0];
-            if(data.Code=="Ok"){
-              that.$vux.toast.show('发送成功');
-              that.sessionId = object.sessionId;
-            }else{
-              that.$vux.toast.show({text: data.msg, type: 'warn', isShowMask: true});
-            }
-          }).catch(function (error) {
-            console.log(error)
-            that.$vux.loading.hide()
-            that.$vux.toast.show({text: '发送失败失败', type: 'warn', isShowMask: true});
-          })
+          that.verifyImg = true;
 
         },
         timer(){
@@ -149,6 +141,42 @@
             clearTimeout(timer);
             this.disabled = false;
           }
+        },
+        onSuccess(){
+          let that = this;
+          that.$vux.toast.show('真棒拼对了哦!');
+          this.time = 60;
+          this.timer();
+          // 获取验证码请求
+          var obj = {"phoneNum":that.form.phoneNum};
+          getSms(obj).then(function (data) {
+            let object = data.data;
+            that.$vux.loading.hide()
+            console.log(data)
+            console.log(data.data.SendStatusSet)
+            data=data.data.SendStatusSet[0];
+            if(data.Code=="Ok"){
+              that.$vux.toast.show('发送成功');
+              that.sessionId = object.sessionId;
+              that.verifyImg = false;
+            }else{
+              that.$vux.toast.show({text: data.msg, type: 'warn', isShowMask: true});
+              that.verifyImg = false;
+            }
+          }).catch(function (error) {
+            console.log(error)
+            that.$vux.loading.hide()
+            that.$vux.toast.show({text: '发送失败失败', type: 'warn', isShowMask: true});
+            that.verifyImg = false;
+          })
+        },
+        onFail(){
+          let that = this;
+          that.$vux.toast.show({text: '验证码飞走了!', type: 'warn', isShowMask: true});
+          that.verifyImg = false;
+        },
+        onRefresh(){
+
         }
       }
     }
@@ -159,6 +187,7 @@
     background: #fbf9fe;
     padding-top: 40px;
     height: 100%;
+    position: relative;
   }
   .title{
     font-size: 20px;
@@ -174,5 +203,17 @@
     width: 90%;
     margin:auto;
     margin-top: 20px;
+  }
+  .verifyImg_box{
+    position: absolute;
+    top: 25%;
+    background: #fff;
+    width: 100%;
+  }
+  .verifyImg_box .weui-cells:before{
+    border-top: none !important;
+  }
+  .slide-verify{
+    margin: 0 auto !important;
   }
 </style>

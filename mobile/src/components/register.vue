@@ -22,6 +22,7 @@
                     @success="onSuccess"
                     @fail="onFail"
                     @refresh="onRefresh"
+                    ref="slideblock"
       ></slide-verify>
     </group>
     <flexbox>
@@ -118,7 +119,7 @@
         // 获取验证码
         sendSmsCode(){
           let that = this;
-          var reg=11&& /^((13|14|15|17|18)[0-9]{1}\d{8})$/;//手机号正则验证
+          var reg=11&& /^((13|14|15|16|17|18)[0-9]{1}\d{8})$/;//手机号正则验证
           var phoneNum = that.form.phoneNum;
           if(!phoneNum){//未输入手机号
             that.$vux.toast.show({text: '请输入手机号码', type: 'warn', isShowMask: true});
@@ -126,6 +127,7 @@
           }
           if(!reg.test(phoneNum)){//手机号不合法
             that.$vux.toast.show({text: '您输入的手机号码不合法，请重新输入', type: 'warn', isShowMask: true});
+            return;
           }
           that.verifyImg = true;
 
@@ -159,21 +161,25 @@
               that.$vux.toast.show('发送成功');
               that.sessionId = object.sessionId;
               that.verifyImg = false;
+              that.$refs.slideblock.reset();
             }else{
-              that.$vux.toast.show({text: data.msg, type: 'warn', isShowMask: true});
+              that.$vux.toast.show({text: data.Message, type: 'warn', isShowMask: true});
               that.verifyImg = false;
+              that.$refs.slideblock.reset();
             }
           }).catch(function (error) {
             console.log(error)
             that.$vux.loading.hide()
             that.$vux.toast.show({text: '发送失败失败', type: 'warn', isShowMask: true});
             that.verifyImg = false;
+            that.$refs.slideblock.reset();
           })
         },
         onFail(){
           let that = this;
           that.$vux.toast.show({text: '验证码飞走了!', type: 'warn', isShowMask: true});
           that.verifyImg = false;
+          that.$refs.slideblock.reset();
         },
         onRefresh(){
 

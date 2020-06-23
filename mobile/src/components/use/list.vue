@@ -123,8 +123,8 @@
               that.total = data.data.length;
               var breakfastSum = 0, lunchSum = 0, dinnerSum = 0, eatSum = 0, trafficSum = 0, sockSum = 0,
                   clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0, buySum = 0;
-              that.tableData.forEach((item, index) => {
-                that.tableData[index].sumCalc = (parseFloat(item.breakfast)+parseFloat(item.lunch)+parseFloat(item.dinner)+
+              that.objectData.forEach((item, index) => {
+                that.objectData[index].sumCalc = (parseFloat(item.breakfast)+parseFloat(item.lunch)+parseFloat(item.dinner)+
                   parseFloat(item.traffic)+parseFloat(item.sock)+parseFloat(item.clothes)+
                   parseFloat(item.play)+parseFloat(item.others)+parseFloat(item.gifts)).toFixed(2);
                 breakfastSum = parseFloat(item.breakfast)+breakfastSum;
@@ -138,8 +138,7 @@
                 giftsSum = parseFloat(item.gifts)+giftsSum;
                 buySum = parseFloat(item.buy)+buySum;
                 that.dateArr.push(formatDate(new Date(item.date), "yyyy-MM-dd"));
-                that.costArr.push({"value":that.tableData[index].sumCalc,"name":formatDate(new Date(item.date), "yyyy-MM-dd")});
-
+                that.costArr.push({"value":that.objectData[index].sumCalc,"name":formatDate(new Date(item.date), "yyyy-MM-dd")});
               });
               that.costTypeSumArr.push(
                 {"value": breakfastSum.toFixed(2), "name": "早餐"},
@@ -159,11 +158,11 @@
 
             }
           }else{
-            that.$message.show({text: '系统异常', type: 'warn', isShowMask: true});
+            that.$vux.toast.show({text: '系统异常', type: 'warn', isShowMask: true});
           }
 
         }).catch(function (error) {
-          that.$message.show({text: '系统异常', type: 'warn', isShowMask: true});
+          that.$vux.toast.show({text: '系统异常', type: 'warn', isShowMask: true});
         })
       },
 

@@ -212,7 +212,7 @@
               for (let i in that.form) {
                 // console.log(i)
                 if (!(i == "playRemind" || i == "clothesRemind" || i == "giftsRemind" || i == "othersRemind" || i == "buysRemind" || i == "date" || i == 'user')) {
-                  // that.form[i] = 0
+                  that.form[i] = ''
                 } else {
                   if (i != "date" && i != "user") {
                     that.form[i] = ""

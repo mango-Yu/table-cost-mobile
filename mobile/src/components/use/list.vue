@@ -19,7 +19,7 @@
         <el-table :data="tableData" stripe style="width: 100%"
                   show-summary
                   :summary-method="getSummaries">
-          <el-table-column align="center" prop="id" v-if="idShow" label="ID" ></el-table-column>
+          <el-table-column align="center" prop="idIndex" v-if="idShow" label="ID" ></el-table-column>
           <el-table-column align="center" prop="date" label="日期" sortable width="100" >
             <template slot-scope="scope">
               {{scope.row.date  | formatDateTime}}
@@ -82,7 +82,7 @@
     data: function () {
       return {
         loading: false,
-        idShow: false,
+        idShow: true,
         total: 0,
         currentPage: 1,
         pageSize: 10,
@@ -119,11 +119,11 @@
               that.costArr=[];
               that.costTypeSumArr=[];
               that.objectData = data.data;
-              that.tableData= that.pagination(1,10,that.objectData);
               that.total = data.data.length;
               var breakfastSum = 0, lunchSum = 0, dinnerSum = 0, eatSum = 0, trafficSum = 0, sockSum = 0,
                   clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0, buySum = 0;
               that.objectData.forEach((item, index) => {
+                item["idIndex"] = index+1;
                 that.objectData[index].sumCalc = (parseFloat(item.breakfast)+parseFloat(item.lunch)+parseFloat(item.dinner)+
                   parseFloat(item.traffic)+parseFloat(item.sock)+parseFloat(item.clothes)+
                   parseFloat(item.play)+parseFloat(item.others)+parseFloat(item.gifts)).toFixed(2);
@@ -153,6 +153,7 @@
                 {"value": othersSum.toFixed(2), "name": "其他"},
                 {"value": giftsSum.toFixed(2), "name": "人情"}
               );
+              that.tableData= that.pagination(1,10,that.objectData);
               that.drawShape();
             }else{
 
@@ -200,14 +201,15 @@
 
       // 房间号的合计去掉
       getSummaries (param) {
+        let that = this;
         const { columns, data } = param
         const sums = []
         columns.forEach((column, index) => {
           if (index === 0) {
             sums[index] = '总计(￥)'
-          } else if (index === 2 || index === 3 || index === 4 || index === 5
-            || index === 6 || index === 7 || index === 9 || index === 11 || index === 13 || index === 15 || index === 18) {
-            const values = data.map(item => Number(item[column.property]))
+          } else if (index === 3 || index === 4 || index === 5 || index === 6
+            || index === 7 || index === 8 || index === 10 || index === 12 || index === 14 || index === 16 || index === 19) {
+            const values = that.objectData.map(item => Number(item[column.property]))
             if (!values.every(value => isNaN(value))) {
               sums[index] = parseFloat(values.reduce((prev, curr) => {
                 const value = parseFloat(curr).toFixed(2)
@@ -245,7 +247,9 @@
           },
           series: [{
             data: that.costArr,
-            type: 'line'
+            type: 'line',
+            smooth:true,
+            symbolSize: 8,//拐点大小
           }]
         });
 

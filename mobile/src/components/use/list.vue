@@ -33,6 +33,12 @@
           <el-table-column align="center" prop="sock" label="零食" ></el-table-column>
           <el-table-column align="center" prop="buy" label="购物" ></el-table-column>
           <el-table-column align="center" prop="buysRemind" label="购物费用备注" ></el-table-column>
+          <el-table-column align="center" prop="foods" label="食材超市" ></el-table-column>
+          <el-table-column align="center" prop="foodsRemind" label="食材超市费用备注" ></el-table-column>
+          <el-table-column align="center" prop="visa" label="信用卡花呗" ></el-table-column>
+          <el-table-column align="center" prop="visaRemind" label="信用卡花呗费用备注" ></el-table-column>
+          <el-table-column align="center" prop="loans" label="贷款" ></el-table-column>
+          <el-table-column align="center" prop="loansRemind" label="贷款费用备注" ></el-table-column>
           <el-table-column align="center" prop="clothes" label="服装" ></el-table-column>
           <el-table-column align="center" prop="clothesRemind" label="服装费用备注" ></el-table-column>
           <el-table-column align="center" prop="play" label="娱乐" ></el-table-column>
@@ -121,7 +127,7 @@
               that.objectData = data.data;
               that.total = data.data.length;
               var breakfastSum = 0, lunchSum = 0, dinnerSum = 0, eatSum = 0, trafficSum = 0, sockSum = 0,
-                  clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0, buySum = 0;
+                  clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0, buySum = 0, foodsSum = 0, visaSum = 0, loansSum = 0;
               that.objectData.forEach((item, index) => {
                 item["idIndex"] = index+1;
                 that.objectData[index].sumCalc = (parseFloat(item.breakfast)+parseFloat(item.lunch)+parseFloat(item.dinner)+
@@ -137,6 +143,9 @@
                 othersSum = parseFloat(item.others)+othersSum;
                 giftsSum = parseFloat(item.gifts)+giftsSum;
                 buySum = parseFloat(item.buy)+buySum;
+                foodsSum = parseFloat(item.foods)+foodsSum;
+                visaSum = parseFloat(item.visa)+visaSum;
+                loansSum = parseFloat(item.loans)+loansSum;
                 that.dateArr.push(formatDate(new Date(item.date), "yyyy-MM-dd"));
                 that.costArr.push({"value":that.objectData[index].sumCalc,"name":formatDate(new Date(item.date), "yyyy-MM-dd")});
               });
@@ -148,6 +157,9 @@
                 {"value": trafficSum.toFixed(2), "name": "交通"},
                 {"value": sockSum.toFixed(2), "name": "零食"},
                 {"value": buySum.toFixed(2), "name": "购物"},
+                {"value": foodsSum.toFixed(2), "name": "食材超市"},
+                {"value": visaSum.toFixed(2), "name": "信用卡花呗"},
+                {"value": loansSum.toFixed(2), "name": "贷款"},
                 {"value": clothesSum.toFixed(2), "name": "服装"},
                 {"value": playSum.toFixed(2), "name": "娱乐"},
                 {"value": othersSum.toFixed(2), "name": "其他"},
@@ -208,7 +220,7 @@
           if (index === 0) {
             sums[index] = '总计(￥)'
           } else if (index === 3 || index === 4 || index === 5 || index === 6
-            || index === 7 || index === 8 || index === 10 || index === 12 || index === 14 || index === 16 || index === 19) {
+            || index === 7 || index === 8 || index === 10 || index === 12 || index === 14 || index === 16 || index === 18  || index === 20 || index === 22 || index === 25) {
             const values = that.objectData.map(item => Number(item[column.property]))
             if (!values.every(value => isNaN(value))) {
               sums[index] = parseFloat(values.reduce((prev, curr) => {
@@ -301,10 +313,10 @@
             formatter: '{a} <br/>{b} : {c}元({d}%)'
           },
           legend: {
-            orient: 'vertical',
+            orient: 'horizontal',
             left: '10',
-            top: '60',
-            data: ["早餐", "午餐", '晚餐', "餐飲", "交通", "购物", "零食", "服装", "娱乐", "其他", "人情"]
+            top: '30',
+            data: ["早餐", "午餐", '晚餐', "餐飲", "交通", "购物", "食材超市", "信用开花呗", "贷款", "零食", "服装", "娱乐", "其他", "人情"]
           },
           series: [
             {

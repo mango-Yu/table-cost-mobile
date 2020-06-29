@@ -6,6 +6,9 @@
         <li >吃饭费用:{{eat}}&nbsp;<br/>早中晚:({{form.breakfast}},{{form.lunch}},{{form.dinner}} )</li>
         <li >交通费用:{{form.traffic}}</li>
         <li >购物费用:{{form.buy}}</li>
+        <li >食材超市费用:{{form.foods}}</li>
+        <li >信用卡花呗费用:{{form.visa}}</li>
+        <li >贷款费用:{{form.loans}}</li>
         <li >衣服费用:{{form.clothes}}</li>
         <li >零食费用:{{form.sock}}</li>
         <li >其他费用:{{form.others}}</li>
@@ -36,7 +39,10 @@
             clothes: 0,
             play: 0,
             others: 0,
-            buy: 0
+            buy: 0,
+            loans: 0,
+            visa: 0,
+            foods: 0
           },
         }
       },

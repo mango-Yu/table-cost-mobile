@@ -26,6 +26,18 @@
       <x-textarea placeholder="网购费用备注" v-model="form.buysRemind"></x-textarea>
     </group>
     <group>
+      <x-input text-align="right" title="食材超市费用" type="number" placeholder="0" v-model="form.foods" @on-blur="blurInput('foods')"></x-input>
+      <x-textarea placeholder="食材超市费用备注" v-model="form.foodsRemind"></x-textarea>
+    </group>
+    <group>
+      <x-input text-align="right" title="贷款费用" type="number" placeholder="0" v-model="form.loans" @on-blur="blurInput('loans')"></x-input>
+      <x-textarea placeholder="贷款费用备注" v-model="form.loansRemind"></x-textarea>
+    </group>
+    <group>
+      <x-input text-align="right" title="信用卡花呗费用" type="number" placeholder="0" v-model="form.visa" @on-blur="blurInput('visa')"></x-input>
+      <x-textarea placeholder="信用卡花呗费用备注" v-model="form.visaRemind"></x-textarea>
+    </group>
+    <group>
       <x-input text-align="right" title="服装费用" type="number" placeholder="0" v-model="form.clothes" @on-blur="blurInput('clothes')"></x-input>
       <x-textarea placeholder="服装费用备注" v-model="form.clothesRemind"></x-textarea>
     </group>
@@ -77,6 +89,12 @@
           giftsRemind: "",
           buy: '',
           buysRemind: "",
+          loans: '',
+          loansRemind: "",
+          visa: '',
+          visaRemind: "",
+          foods: '',
+          foodsRemind: "",
           user: ""
         },
         now: "",
@@ -98,7 +116,8 @@
       all() {
        let allSpend = (this.funcDealNull(this.form.breakfast) + this.funcDealNull(this.form.lunch) + this.funcDealNull(this.form.dinner)
                       + this.funcDealNull(this.form.traffic) + this.funcDealNull(this.form.sock) + this.funcDealNull(this.form.clothes) + this.funcDealNull(this.form.play)
-                      + this.funcDealNull(this.form.others) + this.funcDealNull(this.form.gifts) + this.funcDealNull(this.form.buy));
+                      + this.funcDealNull(this.form.others) + this.funcDealNull(this.form.gifts) + this.funcDealNull(this.form.buy) + this.funcDealNull(this.form.foods)
+                      + this.funcDealNull(this.form.visa) + this.funcDealNull(this.form.loans));
         return isNaN(allSpend) ? 0 : allSpend.toFixed(2);
       }
     },
@@ -166,7 +185,8 @@
         let flag = 1;
         let error = ""
         for (let i in obj) {
-          if (!(i == "playRemind" || i == "clothesRemind" || i == "othersRemind" || i == "giftsRemind" || i == "buysRemind" || i == "date" || i == 'user')) {
+          if (!(i == "playRemind" || i == "clothesRemind" || i == "othersRemind" || i == "giftsRemind" || i == "buysRemind" || i == "loansRemind" || i == "visaRemind" || i == "foodsRemind"
+                || i == "date" || i == 'user')) {
             // console.log((obj[i]))
             if ((obj[i] + "") == "") {
               // flag = 0;
@@ -211,7 +231,8 @@
             } else {
               for (let i in that.form) {
                 // console.log(i)
-                if (!(i == "playRemind" || i == "clothesRemind" || i == "giftsRemind" || i == "othersRemind" || i == "buysRemind" || i == "date" || i == 'user')) {
+                if (!(i == "playRemind" || i == "clothesRemind" || i == "giftsRemind" || i == "othersRemind" || i == "buysRemind" || i == "loansRemind" || i == "visaRemind" || i == "foodsRemind"
+                      || i == "date" || i == 'user')) {
                   that.form[i] = ''
                 } else {
                   if (i != "date" && i != "user") {

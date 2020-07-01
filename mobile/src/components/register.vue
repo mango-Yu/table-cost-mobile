@@ -76,13 +76,22 @@
     },
     methods: {
       onSubmit() {
+        var that = this;
         if (this.form.name == '') {
           this.$vux.toast.show({text: '请输入用户名', type: 'warn', isShowMask: true});
           // this.$vux.toast.error('请输入用户名');
           return
         }
+        if (!that.CheckPassWord(this.form.name, 0)) {
+          this.$vux.toast.show({text: '必须为字母加数字且长度不大于6位', type: 'warn', isShowMask: true});
+          return
+        }
         if (this.form.password == '') {
           this.$vux.toast.show({text: '请输入密码', type: 'warn', isShowMask: true});
+          return
+        }
+        if (!that.CheckPassWord(this.form.password, 1)) {
+          this.$vux.toast.show({text: '必须为字母加数字且长度不小于6位', type: 'warn', isShowMask: true});
           return
         }
         if (this.form.password != this.form.repPassword) {
@@ -97,7 +106,6 @@
           this.$vux.toast.show({text: '请输入验证码', type: 'warn', isShowMask: true});
           return
         }
-        var that = this
         this.$vux.loading.show({
           text: 'Loading'
         })
@@ -200,8 +208,27 @@
       onRefresh() {
 
       },
-      changePwoTo(){
-
+      CheckPassWord(password, type) {//必须为字母加数字且长度不小于6位
+        var str = password;
+        if (str != null) {
+          if (str.length > 6 && type === 0) {
+            return false;
+          }else if (str.length < 6 && type === 1) {
+            return false;
+          }
+        }else {
+          return false;
+        }
+        var reg1 = new RegExp(/^[0-9A-Za-z]+$/);
+        if (!reg1.test(str)) {
+          return false;
+        }
+        var reg = new RegExp(/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/);
+        if (reg.test(str)) {
+          return true;
+        } else {
+          return false;
+        }
       }
     }
   }

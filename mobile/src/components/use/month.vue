@@ -20,7 +20,7 @@
 
 <script>
   import store from '@/store/store'
-  import {getSumByDate,changePassword} from '@/assets/userapi'
+  import {getSumByDate} from '@/assets/userapi'
 
     export default {
         name: "month",
@@ -137,55 +137,6 @@
           })
         },
         change(){
-
-        },
-        loginout(){
-          this.$confirm('确认退出?', '提示', {
-            cancelButtonText: '取消',
-            confirmButtonText: '确定',
-            type: 'warning'
-          }).then(() => {
-            this.out();
-          }).catch(() => {
-
-          });
-        },
-        out(){
-          sessionStorage.removeItem('name');
-          this.$router.push('/')
-        },
-        changePas(){
-          if(this.passsword.origain==''){
-            this.$vux.toast.show({text: '请输入原来的密码', type: 'warn', isShowMask: true});
-            return
-          }
-          if(this.passsword.newword==''){
-            this.$vux.toast.show({text: '请输入新的的密码', type: 'warn', isShowMask: true});
-            return
-          }
-          if(this.passsword.remewword==''){
-            this.$vux.toast.show({text: '重复密码', type: 'warn', isShowMask: true});
-            return
-          }
-          if(this.passsword.remewword!=this.passsword.newword){
-            this.$vux.toast.show({text: '新的的密码与重复密码不一致', type: 'warn', isShowMask: true});
-            return
-          }
-          let that=this;
-          changePassword(this.passsword.origain,this.passsword.newword).then(function (data) {
-            console.log(data)
-            let  newdata=data.data;
-            if(newdata.code==1){
-              that.$vux.toast.show('修改成功');
-              that.dialogVisible=false
-            }else{
-              that.$vux.toast.show({text: newdata.msg, type: 'warn', isShowMask: true});
-            }
-          }).catch(function (error) {
-            console.log(error)
-            that.$vux.toast.show({text: '未知异常', type: 'warn', isShowMask: true});
-
-          })
 
         },
         getTwo(val){

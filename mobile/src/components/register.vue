@@ -5,8 +5,8 @@
     </div>
     <div class="remind">这是一个简单的记账本<br>可以让你知道你的钱花在哪了</div>
     <group>
-      <x-input type="text" placeholder="用户名" v-model="form.name"></x-input>
-      <x-input type="password" placeholder="密码" v-model="form.password"></x-input>
+      <x-input type="text" placeholder="用户名需为字母加数字且长度不大于6位" v-model="form.name"></x-input>
+      <x-input type="password" placeholder="密码需为字母加数字且长度不小于6位" v-model="form.password"></x-input>
       <x-input type="password" placeholder="重复密码" v-model="form.repPassword"></x-input>
       <x-input type="number" placeholder="请输入手机号码" v-model="form.phoneNum"></x-input>
       <x-input type="number" placeholder="请输入验证码" v-model="form.verifyNum">

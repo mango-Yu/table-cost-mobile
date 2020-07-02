@@ -10,6 +10,7 @@
         <li >信用卡花呗费用:{{form.visa}}</li>
         <li >贷款费用:{{form.loans}}</li>
         <li >衣服费用:{{form.clothes}}</li>
+        <li >化妆品费用:{{form.skin}}</li>
         <li >零食费用:{{form.sock}}</li>
         <li >其他费用:{{form.others}}</li>
         <li >游玩费用:{{form.play}}</li>
@@ -42,7 +43,8 @@
             buy: 0,
             loans: 0,
             visa: 0,
-            foods: 0
+            foods: 0,
+            skin: 0
           },
         }
       },

@@ -41,6 +41,8 @@
           <el-table-column align="center" prop="loansRemind" label="贷款费用备注" ></el-table-column>
           <el-table-column align="center" prop="clothes" label="服装" ></el-table-column>
           <el-table-column align="center" prop="clothesRemind" label="服装费用备注" ></el-table-column>
+          <el-table-column align="center" prop="skin" label="化妆品" ></el-table-column>
+          <el-table-column align="center" prop="skinRemind" label="化妆品费用备注" ></el-table-column>
           <el-table-column align="center" prop="play" label="娱乐" ></el-table-column>
           <el-table-column align="center" prop="playRemind" label="游玩费用备注" ></el-table-column>
           <el-table-column align="center" prop="others" label="其他" ></el-table-column>
@@ -106,8 +108,7 @@
       };
     },
     mounted: function () {
-      // [{"id":1,"date":"2020-01-09T16:00:00.000Z","user":"syy","breakfast":"11","lunch":"0","dinner":"0","traffic":"1","buy":"0","sock":"1","clothes":"1","play":"11","others":"1","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":" ","buysRemind":"","work":1},{"id":2,"date":"2020-01-10T16:00:00.000Z","user":"syy","breakfast":"22","lunch":"0","dinner":"0","traffic":"5","buy":"0","sock":"11","clothes":"0","play":"0","others":"0","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":" ","buysRemind":"","work":0},{"id":4,"date":"2020-01-11T16:00:00.000Z","user":"syy","breakfast":"1","lunch":"1","dinner":"1","traffic":"12","buy":"0","sock":"12","clothes":"0","play":"0","others":"0","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":" ","buysRemind":"","work":0},{"id":5,"date":"2020-01-16T16:00:00.000Z","user":"syy","breakfast":"13","lunch":"20","dinner":"0","traffic":"10","buy":"0","sock":"0","clothes":"0","play":"0","others":"0","gifts":"1000","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":"","buysRemind":"","work":1},{"id":6,"date":"2020-06-15T16:00:00.000Z","user":"syy","breakfast":"4","lunch":"19","dinner":"16","traffic":"7.2","buy":"0","sock":"0","clothes":"0","play":"0","others":"0","gifts":"0","playRemind":"æ— ","clothesRemind":"æ— ","othersRemind":"æ— ","giftsRemind":"wu ","buysRemind":"","work":1},{"id":7,"date":"2020-06-16T16:00:00.000Z","user":"syy","breakfast":"4.3","lunch":"23.2","dinner":"0","traffic":"3.2","buy":"0","sock":"0","clothes":"0","play":"0","others":"0","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":"","buysRemind":"","work":1},{"id":8,"date":"2020-06-17T16:00:00.000Z","user":"syy","breakfast":"4","lunch":"23.3","dinner":"0","traffic":"6.4","buy":"0","sock":"0","clothes":"0","play":"0","others":"88","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"é¼ æ ‡","giftsRemind":"","buysRemind":"","work":1},{"id":9,"date":"2020-06-18T16:00:00.000Z","user":"syy","breakfast":"4","lunch":"17","dinner":"0","traffic":"6.4","buy":"0","sock":"0","clothes":"0","play":"0","others":"486.18","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"ä¿é™©","giftsRemind":"","buysRemind":"","work":1},{"id":10,"date":"2020-06-19T16:00:00.000Z","user":"syy","breakfast":"6","lunch":"16","dinner":"0","traffic":"6.4","buy":"0","sock":"0","clothes":"0","play":"0","others":"0","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":"","buysRemind":"","work":1},{"id":11,"date":"2020-06-20T16:00:00.000Z","user":"syy","breakfast":"0","lunch":"0","dinner":"0","traffic":"0","buy":"0","sock":"0","clothes":"0","play":"0","others":"415.3","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"é£Ÿæ196.4ï¼Œä¿é™©10.75ï¼Œ62.65ï¼Œ85.5ï¼ŒåŸŸåç»­è´¹60","giftsRemind":"","buysRemind":"","work":0},{"id":12,"date":"2020-06-21T16:00:00.000Z","user":"syy","breakfast":"6","lunch":"23.58","dinner":"0","traffic":"6.4","buy":"0","sock":"0","clothes":"0","play":"0","others":"0","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":"","buysRemind":"","work":1},{"id":13,"date":"2020-06-22T16:00:00.000Z","user":"syy","breakfast":"6","lunch":"0","dinner":"0","traffic":"3.2","buy":"0","sock":"0","clothes":"0","play":"0","others":"0","gifts":"0","playRemind":"","clothesRemind":"","othersRemind":"","giftsRemind":"","buysRemind":"","work":1}]
-      // this.init()
+       // this.init()
     },
     computed:{
 
@@ -125,14 +126,18 @@
               that.costArr=[];
               that.costTypeSumArr=[];
               that.objectData = data.data;
+              that.objectData.sort(function(a,b) {
+                return Date.parse((formatDate(new Date(b.date), "yyyy-MM-dd")).replace(/-/g,"/"))-Date.parse((formatDate(new Date(a.date), "yyyy-MM-dd")).replace(/-/g,"/"));
+              });
               that.total = data.data.length;
               var breakfastSum = 0, lunchSum = 0, dinnerSum = 0, eatSum = 0, trafficSum = 0, sockSum = 0,
-                  clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0, buySum = 0, foodsSum = 0, visaSum = 0, loansSum = 0;
+                  clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0, buySum = 0, foodsSum = 0, visaSum = 0, loansSum = 0, skinSum = 0;
               that.objectData.forEach((item, index) => {
                 item["idIndex"] = index+1;
                 that.objectData[index].sumCalc = (parseFloat(item.breakfast)+parseFloat(item.lunch)+parseFloat(item.dinner)+
                   parseFloat(item.traffic)+parseFloat(item.sock)+parseFloat(item.clothes)+
-                  parseFloat(item.play)+parseFloat(item.others)+parseFloat(item.gifts)+parseFloat(item.buy)+parseFloat(item.foods)+parseFloat(item.visa)+parseFloat(item.loans)).toFixed(2);
+                  parseFloat(item.play)+parseFloat(item.others)+parseFloat(item.gifts)+
+                  parseFloat(item.buy)+parseFloat(item.foods)+parseFloat(item.visa)+parseFloat(item.loans)+parseFloat(item.skin)).toFixed(2);
                 breakfastSum = parseFloat(item.breakfast)+breakfastSum;
                 lunchSum = parseFloat(item.lunch)+lunchSum;
                 dinnerSum = parseFloat(item.dinner)+dinnerSum;
@@ -146,6 +151,7 @@
                 foodsSum = parseFloat(item.foods)+foodsSum;
                 visaSum = parseFloat(item.visa)+visaSum;
                 loansSum = parseFloat(item.loans)+loansSum;
+                skinSum = parseFloat(item.skin)+loansSum;
                 that.dateArr.push(formatDate(new Date(item.date), "yyyy-MM-dd"));
                 that.costArr.push({"value":that.objectData[index].sumCalc,"name":formatDate(new Date(item.date), "yyyy-MM-dd")});
               });
@@ -161,6 +167,7 @@
                 {"value": visaSum.toFixed(2), "name": "信用卡花呗"},
                 {"value": loansSum.toFixed(2), "name": "贷款"},
                 {"value": clothesSum.toFixed(2), "name": "服装"},
+                {"value": skinSum.toFixed(2), "name": "化妆品"},
                 {"value": playSum.toFixed(2), "name": "娱乐"},
                 {"value": othersSum.toFixed(2), "name": "其他"},
                 {"value": giftsSum.toFixed(2), "name": "人情"}
@@ -220,7 +227,7 @@
           if (index === 0) {
             sums[index] = '总计(￥)'
           } else if (index === 3 || index === 4 || index === 5 || index === 6
-            || index === 7 || index === 8 || index === 10 || index === 12 || index === 14 || index === 16 || index === 18  || index === 20 || index === 22 || index === 25) {
+            || index === 7 || index === 8 || index === 10 || index === 12 || index === 14 || index === 16 || index === 18  || index === 20 || index === 22 || index === 24 || index === 27) {
             const values = that.objectData.map(item => Number(item[column.property]))
             if (!values.every(value => isNaN(value))) {
               sums[index] = parseFloat(values.reduce((prev, curr) => {
@@ -316,7 +323,7 @@
             orient: 'horizontal',
             left: '10',
             top: '30',
-            data: ["早餐", "午餐", '晚餐', "餐飲", "交通", "购物", "食材超市", "信用开花呗", "贷款", "零食", "服装", "娱乐", "其他", "人情"]
+            data: ["早餐", "午餐", '晚餐', "餐飲", "交通", "购物", "食材超市", "信用开花呗", "贷款", "零食", "服装", "化妆品", "娱乐", "其他", "人情"]
           },
           series: [
             {

@@ -132,7 +132,7 @@
                 item["idIndex"] = index+1;
                 that.objectData[index].sumCalc = (parseFloat(item.breakfast)+parseFloat(item.lunch)+parseFloat(item.dinner)+
                   parseFloat(item.traffic)+parseFloat(item.sock)+parseFloat(item.clothes)+
-                  parseFloat(item.play)+parseFloat(item.others)+parseFloat(item.gifts)).toFixed(2);
+                  parseFloat(item.play)+parseFloat(item.others)+parseFloat(item.gifts)+parseFloat(item.buy)+parseFloat(item.foods)+parseFloat(item.visa)+parseFloat(item.loans)).toFixed(2);
                 breakfastSum = parseFloat(item.breakfast)+breakfastSum;
                 lunchSum = parseFloat(item.lunch)+lunchSum;
                 dinnerSum = parseFloat(item.dinner)+dinnerSum;

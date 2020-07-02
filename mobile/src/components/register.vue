@@ -83,7 +83,7 @@
           return
         }
         if (!that.CheckPassWord(this.form.name, 0)) {
-          this.$vux.toast.show({text: '必须为字母加数字且长度不大于6位', type: 'warn', isShowMask: true});
+          this.$vux.toast.show({text: '用户名需为字母加数字且长度不大于6位', type: 'warn', isShowMask: true});
           return
         }
         if (this.form.password == '') {
@@ -91,7 +91,7 @@
           return
         }
         if (!that.CheckPassWord(this.form.password, 1)) {
-          this.$vux.toast.show({text: '必须为字母加数字且长度不小于6位', type: 'warn', isShowMask: true});
+          this.$vux.toast.show({text: '密码需为字母加数字且长度不小于6位', type: 'warn', isShowMask: true});
           return
         }
         if (this.form.password != this.form.repPassword) {

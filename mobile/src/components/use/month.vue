@@ -11,9 +11,11 @@
         <li >贷款费用:{{form.loans}}</li>
         <li >衣服费用:{{form.clothes}}</li>
         <li >化妆品费用:{{form.skin}}</li>
+        <li >医疗费用:{{form.health}}</li>
+        <li >保险费用:{{form.insure}}</li>
         <li >零食费用:{{form.sock}}</li>
         <li >其他费用:{{form.others}}</li>
-        <li >游玩费用:{{form.play}}</li>
+        <li >旅游费用:{{form.play}}</li>
         <li >费用总计:{{count}}</li>
       </ul>
     </div>
@@ -44,7 +46,9 @@
             loans: 0,
             visa: 0,
             foods: 0,
-            skin: 0
+            skin: 0,
+            health: 0,
+            insure: 0
           },
         }
       },

@@ -43,8 +43,12 @@
           <el-table-column align="center" prop="clothesRemind" label="服装费用备注" ></el-table-column>
           <el-table-column align="center" prop="skin" label="化妆品" ></el-table-column>
           <el-table-column align="center" prop="skinRemind" label="化妆品费用备注" ></el-table-column>
+          <el-table-column align="center" prop="health" label="医疗" ></el-table-column>
+          <el-table-column align="center" prop="healthRemind" label="医疗费用备注" ></el-table-column>
+          <el-table-column align="center" prop="insure" label="保险" ></el-table-column>
+          <el-table-column align="center" prop="insureRemind" label="保险费用备注" ></el-table-column>
           <el-table-column align="center" prop="play" label="娱乐" ></el-table-column>
-          <el-table-column align="center" prop="playRemind" label="游玩费用备注" ></el-table-column>
+          <el-table-column align="center" prop="playRemind" label="旅游费用备注" ></el-table-column>
           <el-table-column align="center" prop="others" label="其他" ></el-table-column>
           <el-table-column align="center" prop="othersRemind" label="其他费用备注" ></el-table-column>
           <el-table-column align="center" prop="gifts" label="人情礼物" ></el-table-column>
@@ -131,7 +135,7 @@
               });
               that.total = data.data.length;
               var breakfastSum = 0, lunchSum = 0, dinnerSum = 0, eatSum = 0, trafficSum = 0, sockSum = 0,
-                  clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0, buySum = 0, foodsSum = 0, visaSum = 0, loansSum = 0, skinSum = 0;
+                  clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0, buySum = 0, foodsSum = 0, visaSum = 0, loansSum = 0, skinSum = 0, healthSum = 0, insureSum = 0;
               that.objectData.forEach((item, index) => {
                 item["idIndex"] = index+1;
                 that.objectData[index].sumCalc = (parseFloat(item.breakfast)+parseFloat(item.lunch)+parseFloat(item.dinner)+
@@ -151,7 +155,9 @@
                 foodsSum = parseFloat(item.foods)+foodsSum;
                 visaSum = parseFloat(item.visa)+visaSum;
                 loansSum = parseFloat(item.loans)+loansSum;
-                skinSum = parseFloat(item.skin)+loansSum;
+                skinSum = parseFloat(item.skin)+skinSum;
+                healthSum = parseFloat(item.health)+healthSum;
+                insureSum = parseFloat(item.insure)+insureSum;
                 that.dateArr.push(formatDate(new Date(item.date), "yyyy-MM-dd"));
                 that.costArr.push({"value":that.objectData[index].sumCalc,"name":formatDate(new Date(item.date), "yyyy-MM-dd")});
               });
@@ -168,6 +174,8 @@
                 {"value": loansSum.toFixed(2), "name": "贷款"},
                 {"value": clothesSum.toFixed(2), "name": "服装"},
                 {"value": skinSum.toFixed(2), "name": "化妆品"},
+                {"value": healthSum.toFixed(2), "name": "医疗"},
+                {"value": insureSum.toFixed(2), "name": "保险"},
                 {"value": playSum.toFixed(2), "name": "娱乐"},
                 {"value": othersSum.toFixed(2), "name": "其他"},
                 {"value": giftsSum.toFixed(2), "name": "人情"}
@@ -226,8 +234,10 @@
         columns.forEach((column, index) => {
           if (index === 0) {
             sums[index] = '总计(￥)'
-          } else if (index === 3 || index === 4 || index === 5 || index === 6
-            || index === 7 || index === 8 || index === 10 || index === 12 || index === 14 || index === 16 || index === 18  || index === 20 || index === 22 || index === 24 || index === 27) {
+          } else if (index === 3 || index === 4 || index === 5 || index === 6 || index === 7 || index === 8
+                    || index === 10 || index === 12 || index === 14 || index === 16 || index === 18
+                    || index === 20 || index === 22 || index === 24 || index === 26 || index === 28
+                    || index === 31) {
             const values = that.objectData.map(item => Number(item[column.property]))
             if (!values.every(value => isNaN(value))) {
               sums[index] = parseFloat(values.reduce((prev, curr) => {
@@ -323,7 +333,7 @@
             orient: 'horizontal',
             left: '10',
             top: '30',
-            data: ["早餐", "午餐", '晚餐', "餐飲", "交通", "购物", "食材超市", "信用开花呗", "贷款", "零食", "服装", "化妆品", "娱乐", "其他", "人情"]
+            data: ["早餐", "午餐", '晚餐', "餐飲", "交通", "购物", "食材超市", "信用开花呗", "贷款", "零食", "服装", "化妆品", "医疗", "保险", "娱乐", "其他", "人情"]
           },
           series: [
             {

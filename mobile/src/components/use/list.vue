@@ -160,6 +160,7 @@
                 insureSum = parseFloat(item.insure)+insureSum;
                 that.dateArr.push(formatDate(new Date(item.date), "yyyy-MM-dd"));
                 that.costArr.push({"value":that.objectData[index].sumCalc,"name":formatDate(new Date(item.date), "yyyy-MM-dd")});
+
               });
               that.costTypeSumArr.push(
                 {"value": breakfastSum.toFixed(2), "name": "早餐"},
@@ -181,6 +182,8 @@
                 {"value": giftsSum.toFixed(2), "name": "人情"}
               );
               that.tableData= that.pagination(1,10,that.objectData);
+              that.dateArr.reverse();
+              that.costArr.reverse();
               that.drawShape();
             }else{
 
@@ -279,7 +282,21 @@
             type: 'line',
             smooth:true,
             symbolSize: 8,//拐点大小
-          }]
+          }],
+          dataZoom: [
+            {
+              show: true,
+              realtime: true,
+              start: 50,
+              end: 100
+            },
+            {
+              type: 'inside',
+              realtime: true,
+              start: 50,
+              end: 100
+            }
+          ]
         });
 
         this.chartBar.setOption({
@@ -318,7 +335,25 @@
               barWidth: '60%',
               data:that.costArr
             }
-          ]
+          ],
+          dataZoom: [
+            {
+              show: true,
+              realtime: true,
+              start: 50,
+              end: 100
+            },
+            {
+              type: 'inside',
+              realtime: true,
+              start: 50,
+              end: 100
+            }
+          ],
+          grid: {
+            top: 30,
+            bottom: 60
+          },
         });
         this.chartPie.setOption({
           title: {

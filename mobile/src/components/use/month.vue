@@ -3,20 +3,21 @@
       <x-button class="date" type="primary" plain @click.native="showPlugin">日期：{{month}}</x-button>
       <div class="remind-title">整月小结</div>
       <ul>
-        <li >吃饭费用:{{eat}}&nbsp;<br/>早中晚:({{form.breakfast}},{{form.lunch}},{{form.dinner}} )</li>
-        <li >交通费用:{{form.traffic}}</li>
-        <li >购物费用:{{form.buy}}</li>
-        <li >食材超市费用:{{form.foods}}</li>
-        <li >信用卡花呗费用:{{form.visa}}</li>
-        <li >贷款费用:{{form.loans}}</li>
-        <li >衣服费用:{{form.clothes}}</li>
-        <li >化妆品费用:{{form.skin}}</li>
-        <li >医疗费用:{{form.health}}</li>
-        <li >保险费用:{{form.insure}}</li>
-        <li >零食费用:{{form.sock}}</li>
-        <li >其他费用:{{form.others}}</li>
-        <li >旅游费用:{{form.play}}</li>
-        <li >费用总计:{{count}}</li>
+        <li >吃饭费用: {{eat}}&nbsp;<br/>早中晚: ({{form.breakfast}},{{form.lunch}},{{form.dinner}} )</li>
+        <li >交通费用: {{form.traffic}}</li>
+        <li >购物费用: {{form.buy}}</li>
+        <li >食材超市费用: {{form.foods}}</li>
+        <li >信用卡花呗费用: {{form.visa}}</li>
+        <li >贷款费用: {{form.loans}}</li>
+        <li >衣服费用: {{form.clothes}}</li>
+        <li >化妆品费用: {{form.skin}}</li>
+        <li >医疗费用: {{form.health}}</li>
+        <li >保险费用: {{form.insure}}</li>
+        <li >零食费用: {{form.sock}}</li>
+        <li >其他费用: {{form.others}}</li>
+        <li >旅游费用: {{form.play}}</li>
+        <li >人情费用: {{form.gifts}}</li>
+        <li >费用总计: {{count}}</li>
       </ul>
     </div>
 </template>
@@ -43,6 +44,7 @@
             play: 0,
             others: 0,
             buy: 0,
+            gifts: 0,
             loans: 0,
             visa: 0,
             foods: 0,

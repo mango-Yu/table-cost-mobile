@@ -254,7 +254,9 @@
                       i == "buysRemind" || i == "loansRemind" || i == "visaRemind" || i == "foodsRemind" || i == "skinRemind" || i == "healthRemind"|| i == "insureRemind"
                       || i == "date" || i == 'user')) {
                   that.form[i] = ''
-                } else {
+                }else if (i == "work") {
+                  that.form[i] = 1
+                }else {
                   if (i != "date" && i != "user") {
                     that.form[i] = ""
                   }

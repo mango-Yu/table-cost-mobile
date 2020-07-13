@@ -35,7 +35,7 @@
     </group>
     <group>
       <x-input text-align="right" title="信用卡花呗费用" type="number" placeholder="0" v-model="form.visa" @on-blur="blurInput('visa')"></x-input>
-      <x-textarea placeholder="信用卡花呗费用备注" v-model="form.visaRemind"></x-textarea>
+      <x-textarea placeholder="信用卡花呗费用备注(不计总费用)" v-model="form.visaRemind"></x-textarea>
     </group>
     <group>
       <x-input text-align="right" title="服装费用" type="number" placeholder="0" v-model="form.clothes" @on-blur="blurInput('clothes')"></x-input>
@@ -252,17 +252,17 @@
                 // console.log(i)
                 if (!(i == "playRemind" || i == "clothesRemind" || i == "giftsRemind" || i == "othersRemind" ||
                       i == "buysRemind" || i == "loansRemind" || i == "visaRemind" || i == "foodsRemind" || i == "skinRemind" || i == "healthRemind"|| i == "insureRemind"
-                      || i == "date" || i == 'user')) {
+                      || i == "date" || i == 'user') && i !== "work") {
                   that.form[i] = ''
                 }else if (i == "work") {
-                  that.form[i] = 1
+                  that.form.work = 1;
                 }else {
-                  if (i != "date" && i != "user") {
+                  if (i != "date" && i != "user" && i !== "work") {
                     that.form[i] = ""
                   }
                 }
-
               }
+
             }
           } else {
             that.$vux.toast.show({text: '系统异常', type: 'warn', isShowMask: true});

@@ -7,7 +7,7 @@
         <li >交通费用: {{form.traffic}}</li>
         <li >购物费用: {{form.buy}}</li>
         <li >食材超市费用: {{form.foods}}</li>
-        <li >信用卡花呗费用: {{form.visa}}</li>
+        <li >信用卡花呗费用(不计总费用): {{form.visa}}</li>
         <li >贷款费用: {{form.loans}}</li>
         <li >衣服费用: {{form.clothes}}</li>
         <li >化妆品费用: {{form.skin}}</li>
@@ -131,7 +131,11 @@
                 let str=i.split(')')[0].split('(')[1]
                 that.form[str]=0
               }else{
-                that.count+=obj[i];
+                if (i.indexOf('visa') > 0) {
+                  that.count+=0;
+                }else {
+                  that.count+=obj[i];
+                }
                 // console.log(obj[i])
                 let str=i.split(')')[0].split('(')[1]
 

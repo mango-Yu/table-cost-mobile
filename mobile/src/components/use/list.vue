@@ -36,7 +36,7 @@
           <el-table-column align="center" prop="foods" label="食材超市" ></el-table-column>
           <el-table-column align="center" prop="foodsRemind" label="食材超市费用备注" ></el-table-column>
           <el-table-column align="center" prop="visa" label="信用卡花呗" ></el-table-column>
-          <el-table-column align="center" prop="visaRemind" label="信用卡花呗费用备注" ></el-table-column>
+          <el-table-column align="center" prop="visaRemind" label="信用卡花呗费用备注(不计总费用)" ></el-table-column>
           <el-table-column align="center" prop="loans" label="贷款" ></el-table-column>
           <el-table-column align="center" prop="loansRemind" label="贷款费用备注" ></el-table-column>
           <el-table-column align="center" prop="clothes" label="服装" ></el-table-column>
@@ -141,7 +141,7 @@
                 that.objectData[index].sumCalc = (parseFloat(item.breakfast)+parseFloat(item.lunch)+parseFloat(item.dinner)+
                   parseFloat(item.traffic)+parseFloat(item.sock)+parseFloat(item.clothes)+
                   parseFloat(item.play)+parseFloat(item.others)+parseFloat(item.gifts)+
-                  parseFloat(item.buy)+parseFloat(item.foods)+parseFloat(item.visa)+parseFloat(item.loans)+parseFloat(item.skin)).toFixed(2);
+                  parseFloat(item.buy)+parseFloat(item.foods)+parseFloat(item.loans)+parseFloat(item.skin)+parseFloat(item.health)+parseFloat(item.insure)).toFixed(2);
                 breakfastSum = parseFloat(item.breakfast)+breakfastSum;
                 lunchSum = parseFloat(item.lunch)+lunchSum;
                 dinnerSum = parseFloat(item.dinner)+dinnerSum;
@@ -171,7 +171,7 @@
                 {"value": sockSum.toFixed(2), "name": "零食"},
                 {"value": buySum.toFixed(2), "name": "购物"},
                 {"value": foodsSum.toFixed(2), "name": "食材超市"},
-                {"value": visaSum.toFixed(2), "name": "信用卡花呗"},
+                {"value": visaSum.toFixed(2), "name": "信用花呗"},
                 {"value": loansSum.toFixed(2), "name": "贷款"},
                 {"value": clothesSum.toFixed(2), "name": "服装"},
                 {"value": skinSum.toFixed(2), "name": "化妆品"},

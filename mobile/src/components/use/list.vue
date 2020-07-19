@@ -53,6 +53,7 @@
           <el-table-column align="center" prop="othersRemind" label="其他费用备注" ></el-table-column>
           <el-table-column align="center" prop="gifts" label="人情礼物" ></el-table-column>
           <el-table-column align="center" prop="giftsRemind" label="人情礼物费用备注" ></el-table-column>
+          <el-table-column align="center" prop="house" label="房租" ></el-table-column>
           <el-table-column align="center" prop="work" label="是否上班" sortable>
             <template slot-scope="scope">
                 {{scope.row.work == 1? "上班" : "不上班"}}
@@ -63,11 +64,11 @@
           </el-table-column>
         </el-table>
       </el-col>
-      <el-col :span="24" class="toolbar">
+      <el-col :span="24" class="toolbar" id="toolbar">
         <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                       @prev-click="handlePrevChange" @next-click="handleNextChange"
+                       @prev-click="handlePrevChange" @next-click="handleNextChange" :pager-count="5"
                        :current-page="currentPage" :page-sizes="[10, 50, 100, 200]" :page-size="pageSize"
-                       layout="total, sizes, prev, pager, next" :total="total">
+                       layout="total, sizes, prev, pager, next" :total="total" >
         </el-pagination>
       </el-col>
       <el-col :span="24">
@@ -135,7 +136,7 @@
               });
               that.total = data.data.length;
               var breakfastSum = 0, lunchSum = 0, dinnerSum = 0, eatSum = 0, trafficSum = 0, sockSum = 0,
-                  clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0, buySum = 0, foodsSum = 0, visaSum = 0, loansSum = 0, skinSum = 0, healthSum = 0, insureSum = 0;
+                  clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0, buySum = 0, foodsSum = 0, visaSum = 0, loansSum = 0, skinSum = 0, healthSum = 0, insureSum = 0, houseSum = 0;
               that.objectData.forEach((item, index) => {
                 item["idIndex"] = index+1;
                 that.objectData[index].sumCalc = (parseFloat(item.breakfast)+parseFloat(item.lunch)+parseFloat(item.dinner)+
@@ -158,6 +159,7 @@
                 skinSum = parseFloat(item.skin)+skinSum;
                 healthSum = parseFloat(item.health)+healthSum;
                 insureSum = parseFloat(item.insure)+insureSum;
+                houseSum = parseFloat(item.house)+houseSum;
                 that.dateArr.push(formatDate(new Date(item.date), "yyyy-MM-dd"));
                 that.costArr.push({"value":that.objectData[index].sumCalc,"name":formatDate(new Date(item.date), "yyyy-MM-dd")});
 
@@ -179,7 +181,8 @@
                 {"value": insureSum.toFixed(2), "name": "保险"},
                 {"value": playSum.toFixed(2), "name": "娱乐"},
                 {"value": othersSum.toFixed(2), "name": "其他"},
-                {"value": giftsSum.toFixed(2), "name": "人情"}
+                {"value": giftsSum.toFixed(2), "name": "人情"},
+                {"value": houseSum.toFixed(2), "name": "房租"},
               );
               that.tableData= that.pagination(1,10,that.objectData);
               that.dateArr.reverse();
@@ -240,7 +243,7 @@
           } else if (index === 3 || index === 4 || index === 5 || index === 6 || index === 7 || index === 8
                     || index === 10 || index === 12 || index === 14 || index === 16 || index === 18
                     || index === 20 || index === 22 || index === 24 || index === 26 || index === 28
-                    || index === 31) {
+                    || index === 30 || index === 32) {
             const values = that.objectData.map(item => Number(item[column.property]))
             if (!values.every(value => isNaN(value))) {
               sums[index] = parseFloat(values.reduce((prev, curr) => {
@@ -368,14 +371,14 @@
             orient: 'horizontal',
             left: '10',
             top: '30',
-            data: ["早餐", "午餐", '晚餐', "餐飲", "交通", "购物", "食材超市", "信用花呗", "贷款", "零食", "服装", "化妆品", "医疗", "保险", "娱乐", "其他", "人情"]
+            data: ["早餐", "午餐", '晚餐', "餐飲", "交通", "购物", "食材超市", "信用花呗", "贷款", "零食", "房租", "服装", "化妆品", "医疗", "保险", "娱乐", "其他", "人情"]
           },
           series: [
             {
               name: '花销',
               type: 'pie',
               radius: '55%',
-              center: ['50%', '60%'],
+              center: ['50%', '70%'],
               data: that.costTypeSumArr,
               emphasis: {
                 itemStyle: {
@@ -414,7 +417,11 @@
     background-color: #000;
     opacity: .3;
   }
-
-
+  #toolbar .el-pagination.is-background .btn-next,#toolbar .el-pagination.is-background .btn-prev,#toolbar .el-pagination.is-background .el-pager li{
+    margin: 0 1px;
+  }
+  #toolbar .el-pagination__sizes,#toolbar .el-pagination__total{
+    margin: 0 !important;
+  }
 
 </style>

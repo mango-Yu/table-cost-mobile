@@ -17,6 +17,7 @@
         <li >其他费用: {{form.others}}</li>
         <li >旅游费用: {{form.play}}</li>
         <li >人情费用: {{form.gifts}}</li>
+        <li >房租费用: {{form.house}}</li>
         <li >费用总计: {{count}}</li>
       </ul>
     </div>
@@ -50,7 +51,8 @@
             foods: 0,
             skin: 0,
             health: 0,
-            insure: 0
+            insure: 0,
+            house: 0,
           },
         }
       },
@@ -131,7 +133,7 @@
                 let str=i.split(')')[0].split('(')[1]
                 that.form[str]=0
               }else{
-                if (i.indexOf('visa') > 0) {
+                if (i.indexOf('visa') > 0 || i.indexOf('house') > 0) {
                   that.count+=0;
                 }else {
                   that.count+=obj[i];

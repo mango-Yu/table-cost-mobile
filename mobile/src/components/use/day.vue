@@ -19,6 +19,9 @@
       <span style="margin-left: 10px;">包含饮料，零食，肯德基麦当劳等各种小吃</span>
     </group>
     <group>
+      <x-input text-align="right" title="房租" type="number" placeholder="0" v-model="form.house" @on-blur="blurInput('house')"></x-input>
+    </group>
+    <group>
       <x-switch text-align="right" title="今天上班" :value-map="[0, 1]" v-model="form.work"></x-switch>
     </group>
     <group>
@@ -90,6 +93,7 @@
           dinner: '',
           traffic: '',
           sock: '',
+          house: '',
           work: 1,
           clothes: '',
           clothesRemind: "",

@@ -68,7 +68,7 @@
         <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
                        @prev-click="handlePrevChange" @next-click="handleNextChange" :pager-count="5"
                        :current-page="currentPage" :page-sizes="[10, 50, 100, 200]" :page-size="pageSize"
-                       layout="total, sizes, prev, pager, next" :total="total" >
+                       layout="total, sizes, prev, pager, next" :total="total" small="true">
         </el-pagination>
       </el-col>
       <el-col :span="24">
@@ -78,7 +78,7 @@
         <div id="chartBar" style="width: 100%; height: 400px;"></div>
       </el-col>
       <el-col :span="24">
-        <div id="chartPie" style="width: 100%; height: 400px;"></div>
+        <div id="chartPie" style="width: 100%; height: 480px;"></div>
       </el-col>
     </el-row>
   </div>
@@ -370,7 +370,7 @@
           legend: {
             orient: 'horizontal',
             left: '10',
-            top: '30',
+            top: '40',
             data: ["早餐", "午餐", '晚餐', "餐飲", "交通", "购物", "食材超市", "信用花呗", "贷款", "零食", "房租", "服装", "化妆品", "医疗", "保险", "娱乐", "其他", "人情"]
           },
           series: [
@@ -378,7 +378,7 @@
               name: '花销',
               type: 'pie',
               radius: '55%',
-              center: ['50%', '70%'],
+              center: ['50%', '65%'],
               data: that.costTypeSumArr,
               emphasis: {
                 itemStyle: {
@@ -419,9 +419,6 @@
   }
   #toolbar .el-pagination.is-background .btn-next,#toolbar .el-pagination.is-background .btn-prev,#toolbar .el-pagination.is-background .el-pager li{
     margin: 0 1px;
-  }
-  #toolbar .el-pagination__sizes,#toolbar .el-pagination__total{
-    margin: 0 !important;
   }
 
 </style>

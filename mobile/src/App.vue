@@ -47,4 +47,10 @@ export default {
   color: #2c3e50;
 height: 100%;
 }
+  .toolbar .el-pagination .el-pagination__sizes,.toolbar .el-pagination .el-pagination__total{
+    margin-right: 0 !important;
+  }
+  .el-pagination.is-background.el-pagination--small .btn-next, .el-pagination.is-background.el-pagination--small .btn-prev, .el-pagination.is-background.el-pagination--small .el-pager li{
+    margin: 0 2px !important;
+  }
 </style>

@@ -68,7 +68,7 @@
         <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
                        @prev-click="handlePrevChange" @next-click="handleNextChange" :pager-count="5"
                        :current-page="currentPage" :page-sizes="[10, 50, 100, 200]" :page-size="pageSize"
-                       layout="total, sizes, prev, pager, next" :total="total" small="true">
+                       layout="total, sizes, prev, pager, next" :total="total" small>
         </el-pagination>
       </el-col>
       <el-col :span="24">
@@ -378,7 +378,7 @@
               name: '花销',
               type: 'pie',
               radius: '55%',
-              center: ['50%', '65%'],
+              center: ['47%', '65%'],
               data: that.costTypeSumArr,
               emphasis: {
                 itemStyle: {
@@ -419,6 +419,9 @@
   }
   #toolbar .el-pagination.is-background .btn-next,#toolbar .el-pagination.is-background .btn-prev,#toolbar .el-pagination.is-background .el-pager li{
     margin: 0 1px;
+  }
+  .toolbar{
+    padding: 10px 0;
   }
 
 </style>

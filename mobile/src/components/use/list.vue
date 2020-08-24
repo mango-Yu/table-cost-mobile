@@ -123,18 +123,18 @@
       init(){
         console.log("child")
         var that=this
-        getAllSpending().then(function (data) {
+        getAllSpending({start: that.currentPage-1, pageSize: that.pageSize }).then(function (data) {
           data=data.data
           if(1 === data.code){
-            if(data.data.length>0){
+            if(data.data.dataList.length>0){
               that.dateArr=[];
               that.costArr=[];
               that.costTypeSumArr=[];
-              that.objectData = data.data;
+              that.objectData = data.data.dataList;
               that.objectData.sort(function(a,b) {
                 return Date.parse((formatDate(new Date(b.date), "yyyy-MM-dd")).replace(/-/g,"/"))-Date.parse((formatDate(new Date(a.date), "yyyy-MM-dd")).replace(/-/g,"/"));
               });
-              that.total = data.data.length;
+              that.total = data.data.total;
               var breakfastSum = 0, lunchSum = 0, dinnerSum = 0, eatSum = 0, trafficSum = 0, sockSum = 0,
                   clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0, buySum = 0, foodsSum = 0, visaSum = 0, loansSum = 0, skinSum = 0, healthSum = 0, insureSum = 0, houseSum = 0;
               that.objectData.forEach((item, index) => {

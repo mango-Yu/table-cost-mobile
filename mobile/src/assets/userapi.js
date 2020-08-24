@@ -23,8 +23,8 @@ const getSpending=(date)=>{
   return axios.post(`${url}/getSpending`,{date:date})
 }
 //获取所有消费
-const getAllSpending=()=>{
-  return axios.post(`${url}/getAllSpending`)
+const getAllSpending=(data)=>{
+  return axios.post(`${url}/getAllSpending`, data)
 }
 //按月获取消费 yyyy-mm
 const  getSumByDate=(month,nextmonth)=>{

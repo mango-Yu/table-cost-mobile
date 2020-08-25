@@ -55,17 +55,18 @@ export default {
   }
   .el-table__header-wrapper{
     position: fixed;
-    top: 104px;
+    top: 44px;
     left: 0;
     z-index: 10;
     height: 50px;
+    line-height: 40px;
   }
   .el-table--scrollable-x .el-table__body-wrapper{
     margin-top: 40px;
     border-top: 1px solid #EBEEF5;
   }
   .el-table th{
-    vertical-align: top;
+    vertical-align: top !important;
   }
   #chartColumn{
     z-index: 20;

@@ -130,8 +130,6 @@
       init(){
         this.funcGetAllSpending(this.currentPage-1,this.pageSize);
         this.funcGetSumByUser();
-        console.log(!is_Weixn())
-        console.log(isMobile())
       },
       funcGetAllSpending(start, pageSize){
         let that = this;
@@ -233,11 +231,11 @@
                   "value": parseFloat(that.objectData[index].sumCalc),
                   "date": formatDate(new Date(item.date), "yyyy-MM-dd")
                 });
-                that.dateArr.reverse();
-                that.costArr.reverse();
               });
+              that.dateArr.reverse();
+              that.costArr.reverse();
+              that.drawShape();
             }
-            that.drawShape();
           } else {
             console.log('系统异常')
             that.$vux.toast.show({text: '系统异常', type: 'warn', isShowMask: true});

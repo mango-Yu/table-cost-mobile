@@ -1,19 +1,6 @@
 <template>
   <div ref="list" class="warp-main">
     <el-row v-loading="loading" element-loading-text="拼命加载中">
-      <!--<el-col :span="24" class="toolbar">-->
-        <!--<el-form :inline="true" :model="filters">-->
-          <!--<el-form-item>-->
-            <!--<el-input v-model="filters.number" placeholder="请输入任务编号" auto-complete="off" @keyup.enter.native="handleSearch"></el-input>-->
-          <!--</el-form-item>-->
-          <!--<el-form-item>-->
-            <!--<el-button type="primary" size="medium" v-on:click="handleSearch">查询</el-button>-->
-          <!--</el-form-item>-->
-          <!--<el-form-item class="pull-right">-->
-            <!--<el-button type="primary" size="medium" @click="showAddDialog" icon="el-icon-plus">新增</el-button>-->
-          <!--</el-form-item>-->
-        <!--</el-form>-->
-      <!--</el-col>-->
       <!--表格数据-->
       <el-col class="table-wrapper" id="table-wrapper">
         <el-table :data="tableData" stripe style="width: 100%"
@@ -86,8 +73,8 @@
 
 <script>
   import store from '@/store/store'
-  import {formatDate} from '@/assets/js/tool'
-  import {getAllSpending} from '@/assets/userapi'
+  import {formatDate, is_Weixn, isMobile} from '@/assets/js/tool'
+  import {getAllSpending, getSumByUser} from '@/assets/userapi'
   import echarts from 'echarts'
   export default {
     name: "list",
@@ -109,11 +96,31 @@
         chartBar: null,
         dateArr: [],
         costArr: [],
-        costTypeSumArr: []
+        costTypeSumArr: [],
+        allCostData:{},
+        form: {
+          breakfast: 0,
+          lunch: 0,
+          dinner: 0,
+          traffic: 0,
+          sock: 0,
+          clothes: 0,
+          play: 0,
+          others: 0,
+          buy: 0,
+          gifts: 0,
+          loans: 0,
+          visa: 0,
+          foods: 0,
+          skin: 0,
+          health: 0,
+          insure: 0,
+          house: 0,
+        },
       };
     },
     mounted: function () {
-       // this.init()
+
     },
     computed:{
 
@@ -121,73 +128,30 @@
     methods: {
 
       init(){
-        console.log("child")
-        var that=this
-        getAllSpending({start: that.currentPage-1, pageSize: that.pageSize }).then(function (data) {
-          data=data.data
+        this.funcGetAllSpending(this.currentPage-1,this.pageSize);
+        this.funcGetSumByUser();
+        console.log(!is_Weixn())
+        console.log(isMobile())
+      },
+      funcGetAllSpending(start, pageSize){
+        let that = this;
+        getAllSpending({start: start * 10, pageSize: pageSize}).then(function (data) {
+          data=data.data;
           if(1 === data.code){
             if(data.data.dataList.length>0){
-              that.dateArr=[];
-              that.costArr=[];
-              that.costTypeSumArr=[];
-              that.objectData = data.data.dataList;
-              that.objectData.sort(function(a,b) {
+              that.tableData = data.data.dataList;
+              that.tableData.sort(function(a,b) {
                 return Date.parse((formatDate(new Date(b.date), "yyyy-MM-dd")).replace(/-/g,"/"))-Date.parse((formatDate(new Date(a.date), "yyyy-MM-dd")).replace(/-/g,"/"));
               });
               that.total = data.data.total;
-              var breakfastSum = 0, lunchSum = 0, dinnerSum = 0, eatSum = 0, trafficSum = 0, sockSum = 0,
-                  clothesSum = 0, playSum = 0, othersSum = 0, giftsSum = 0, buySum = 0, foodsSum = 0, visaSum = 0, loansSum = 0, skinSum = 0, healthSum = 0, insureSum = 0, houseSum = 0;
-              that.objectData.forEach((item, index) => {
-                item["idIndex"] = index+1;
-                that.objectData[index].sumCalc = (parseFloat(item.breakfast)+parseFloat(item.lunch)+parseFloat(item.dinner)+
+              that.tableData.forEach((item, index) => {
+                item["idIndex"] = (index+1) + start * 10;
+                that.tableData[index].sumCalc = (parseFloat(item.breakfast)+parseFloat(item.lunch)+parseFloat(item.dinner)+
                   parseFloat(item.traffic)+parseFloat(item.sock)+parseFloat(item.clothes)+
                   parseFloat(item.play)+parseFloat(item.others)+parseFloat(item.gifts)+
                   parseFloat(item.buy)+parseFloat(item.foods)+parseFloat(item.loans)+parseFloat(item.skin)+parseFloat(item.health)+parseFloat(item.insure)).toFixed(2);
-                breakfastSum = parseFloat(item.breakfast)+breakfastSum;
-                lunchSum = parseFloat(item.lunch)+lunchSum;
-                dinnerSum = parseFloat(item.dinner)+dinnerSum;
-                trafficSum = parseFloat(item.traffic)+trafficSum;
-                sockSum = parseFloat(item.sock)+sockSum;
-                clothesSum = parseFloat(item.clothes)+clothesSum;
-                playSum = parseFloat(item.play)+playSum;
-                othersSum = parseFloat(item.others)+othersSum;
-                giftsSum = parseFloat(item.gifts)+giftsSum;
-                buySum = parseFloat(item.buy)+buySum;
-                foodsSum = parseFloat(item.foods)+foodsSum;
-                visaSum = parseFloat(item.visa)+visaSum;
-                loansSum = parseFloat(item.loans)+loansSum;
-                skinSum = parseFloat(item.skin)+skinSum;
-                healthSum = parseFloat(item.health)+healthSum;
-                insureSum = parseFloat(item.insure)+insureSum;
-                houseSum = parseFloat(item.house)+houseSum;
-                that.dateArr.push(formatDate(new Date(item.date), "yyyy-MM-dd"));
-                that.costArr.push({"value":that.objectData[index].sumCalc,"name":formatDate(new Date(item.date), "yyyy-MM-dd")});
 
               });
-              that.costTypeSumArr.push(
-                {"value": breakfastSum.toFixed(2), "name": "早餐"},
-                {"value": lunchSum.toFixed(2), "name": "午餐"},
-                {"value": dinnerSum.toFixed(2), "name": "晚餐"},
-                {"value": (breakfastSum+lunchSum+dinnerSum).toFixed(2),"name":"餐飲"},
-                {"value": trafficSum.toFixed(2), "name": "交通"},
-                {"value": sockSum.toFixed(2), "name": "零食"},
-                {"value": buySum.toFixed(2), "name": "购物"},
-                {"value": foodsSum.toFixed(2), "name": "食材超市"},
-                {"value": visaSum.toFixed(2), "name": "信用花呗"},
-                {"value": loansSum.toFixed(2), "name": "贷款"},
-                {"value": clothesSum.toFixed(2), "name": "服装"},
-                {"value": skinSum.toFixed(2), "name": "化妆品"},
-                {"value": healthSum.toFixed(2), "name": "医疗"},
-                {"value": insureSum.toFixed(2), "name": "保险"},
-                {"value": playSum.toFixed(2), "name": "娱乐"},
-                {"value": othersSum.toFixed(2), "name": "其他"},
-                {"value": giftsSum.toFixed(2), "name": "人情"},
-                {"value": houseSum.toFixed(2), "name": "房租"},
-              );
-              that.tableData= that.pagination(1,10,that.objectData);
-              that.dateArr.reverse();
-              that.costArr.reverse();
-              that.drawShape();
             }else{
 
             }
@@ -196,6 +160,90 @@
           }
 
         }).catch(function (error) {
+          that.$vux.toast.show({text: '系统异常', type: 'warn', isShowMask: true});
+        })
+      },
+      funcGetSumByUser(){
+        let that = this;
+        getSumByUser().then(function (res) {
+          let data = res.data.data;
+          if (res.data.code === 1) {
+            let objData = data.allCostSumList[0];
+            if (objData) {
+              objData.allCost = 0;
+              for (let i in objData) {
+                if (objData[i] == null) {
+                  let str = i.split(')')[0].split('(')[1];
+                  that.form[str] = 0
+                  that.form.allCost = 0;
+                } else {
+                  let str = i.split(')')[0].split('(')[1];
+                  that.form[str] = parseFloat(objData[i]).toFixed(2);
+                  if (str === "visa" || str === "house") {
+                    objData.allCost += 0;
+                  } else {
+                    objData.allCost += parseFloat(objData[i]);
+                  }
+
+                }
+              }
+              objData.allCost = (objData.allCost).toFixed(2);
+              that.allCostData = objData
+              that.costTypeSumArr.push(
+                {"value": parseFloat(that.form.breakfast), "name": "早餐", "const": "const"},
+                {"value": parseFloat(that.form.lunch), "name": "午餐", "const": "const"},
+                {"value": parseFloat(that.form.dinner), "name": "晚餐", "const": "const"},
+                {
+                  "value": parseFloat(that.form.breakfast + that.form.lunch + that.form.dinner),
+                  "name": "餐飲",
+                  "const": "const"
+                },
+                {"value": parseFloat(that.form.traffic), "name": "交通", "const": "const"},
+                {"value": parseFloat(that.form.sock), "name": "零食", "const": "const"},
+                {"value": parseFloat(that.form.buy), "name": "购物", "const": "const"},
+                {"value": parseFloat(that.form.foods), "name": "食材超市", "const": "const"},
+                {"value": parseFloat(that.form.visa), "name": "信用花呗", "const": "const"},
+                {"value": parseFloat(that.form.loans), "name": "贷款", "const": "const"},
+                {"value": parseFloat(that.form.clothes), "name": "服装", "const": "const"},
+                {"value": parseFloat(that.form.skin), "name": "化妆品", "const": "const"},
+                {"value": parseFloat(that.form.health), "name": "医疗", "const": "const"},
+                {"value": parseFloat(that.form.insure), "name": "保险", "const": "const"},
+                {"value": parseFloat(that.form.play), "name": "娱乐", "const": "const"},
+                {"value": parseFloat(that.form.others), "name": "其他", "const": "const"},
+                {"value": parseFloat(that.form.gifts), "name": "人情", "const": "const"},
+                {"value": parseFloat(that.form.house), "name": "房租", "const": "const"}
+              );
+            }
+            if (data.allCostDataList.length > 0) {
+              that.dateArr = [];
+              that.costArr = [];
+              that.objectData = data.allCostDataList;
+              that.objectData.sort(function (a, b) {
+                return Date.parse((formatDate(new Date(b.date), "yyyy-MM-dd")).replace(/-/g, "/")) - Date.parse((formatDate(new Date(a.date), "yyyy-MM-dd")).replace(/-/g, "/"));
+              });
+              that.objectData.forEach((item, index) => {
+                item["idIndex"] = index + 1;
+                that.objectData[index].date = formatDate(new Date(that.objectData[index].date), "yyyy-MM-dd");
+                that.objectData[index].sumCalc = (parseFloat(item.breakfast) + parseFloat(item.lunch) + parseFloat(item.dinner) +
+                  parseFloat(item.traffic) + parseFloat(item.sock) + parseFloat(item.clothes) +
+                  parseFloat(item.play) + parseFloat(item.others) + parseFloat(item.gifts) +
+                  parseFloat(item.buy) + parseFloat(item.foods) + parseFloat(item.loans) + parseFloat(item.skin) + parseFloat(item.health) + parseFloat(item.insure)).toFixed(2);
+                that.dateArr.push(formatDate(new Date(item.date), "yyyy-MM-dd"));
+                that.costArr.push({
+                  "value": parseFloat(that.objectData[index].sumCalc),
+                  "date": formatDate(new Date(item.date), "yyyy-MM-dd")
+                });
+                that.dateArr.reverse();
+                that.costArr.reverse();
+              });
+            }
+            that.drawShape();
+          } else {
+            console.log('系统异常')
+            that.$vux.toast.show({text: '系统异常', type: 'warn', isShowMask: true});
+          }
+        }).catch(function (error) {
+          console.log(error)
           that.$vux.toast.show({text: '系统异常', type: 'warn', isShowMask: true});
         })
       },
@@ -210,22 +258,19 @@
         let that = this;
         that.pageSize = val;
         that.currentPage = 1;
-        that.tableData = that.pagination(that.currentPage,that.pageSize,that.objectData);
+        that.funcGetAllSpending(this.currentPage-1,this.pageSize);
       },
       handleCurrentChange(val) {
         let that = this;
-        that.tableData = that.pagination(val,that.pageSize,that.objectData);
+        that.funcGetAllSpending(val-1,this.pageSize);
       },
       handlePrevChange(val) {
         let that = this;
-        that.tableData = that.pagination(val,that.pageSize,that.objectData);
+        that.funcGetAllSpending(val-1,this.pageSize);
       },
       handleNextChange(val) {
         let that = this;
-        that.tableData = that.pagination(val,that.pageSize,that.objectData);
-      },
-      getAllSpendings(){
-
+        that.funcGetAllSpending(val-1,this.pageSize);
       },
       pagination(pageNo, pageSize, array) {
           var offset = (pageNo - 1) * pageSize;
@@ -244,18 +289,14 @@
                     || index === 10 || index === 12 || index === 14 || index === 16 || index === 18
                     || index === 20 || index === 22 || index === 24 || index === 26 || index === 28
                     || index === 30 || index === 32) {
-            const values = that.objectData.map(item => Number(item[column.property]))
-            if (!values.every(value => isNaN(value))) {
-              sums[index] = parseFloat(values.reduce((prev, curr) => {
-                const value = parseFloat(curr).toFixed(2)
-                if (!isNaN(value)) {
-                  return prev + curr
-                } else {
-                  return prev
-                }
-              }, 0)).toFixed(2)
-            }else {
-              sums[index] = 'N/A'
+            // const values = that.allCostData.map(item => Number(item[column.property]))
+            for (let i  in that.allCostData){
+              let str = i.split(')')[0].split('(')[1];
+              if (str === column.property){
+                sums[index] = (that.allCostData[i]).toFixed(2)
+              }else if (column.property === "sumCalc"){
+                sums[index] = parseFloat(that.allCostData["allCost"]).toFixed(2)
+              }
             }
           } else {
             sums[index] = '--'

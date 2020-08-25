@@ -45,7 +45,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-height: 100%
+  height: 100%
 }
   .toolbar .el-pagination .el-pagination__sizes,.toolbar .el-pagination .el-pagination__total{
     margin-right: 0 !important;
@@ -55,10 +55,10 @@ height: 100%
   }
   .el-table__header-wrapper{
     position: fixed;
-    top: 44px;
+    top: 104px;
     left: 0;
     z-index: 10;
-    height: 40px;
+    height: 50px;
   }
   .el-table--scrollable-x .el-table__body-wrapper{
     margin-top: 40px;

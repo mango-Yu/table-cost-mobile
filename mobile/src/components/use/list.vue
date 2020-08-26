@@ -133,7 +133,7 @@
       },
       funcGetAllSpending(start, pageSize){
         let that = this;
-        getAllSpending({start: start * 10, pageSize: pageSize}).then(function (data) {
+        getAllSpending({start: start * pageSize, pageSize: pageSize}).then(function (data) {
           data=data.data;
           if(1 === data.code){
             if(data.data.dataList.length>0){
@@ -143,7 +143,7 @@
               });
               that.total = data.data.total;
               that.tableData.forEach((item, index) => {
-                item["idIndex"] = (index+1) + start * 10;
+                item["idIndex"] = (index+1) + start * pageSize;
                 that.tableData[index].sumCalc = (parseFloat(item.breakfast)+parseFloat(item.lunch)+parseFloat(item.dinner)+
                   parseFloat(item.traffic)+parseFloat(item.sock)+parseFloat(item.clothes)+
                   parseFloat(item.play)+parseFloat(item.others)+parseFloat(item.gifts)+
